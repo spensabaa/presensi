@@ -262,10 +262,11 @@
     let userLng = null;
     let selectedTipeAbsen = "Datang";
     
-    const sekolahLat = -7.452000; 
-    const sekolahLng = 112.540000;
-    const radiusMaksimal = 15; // Radius maksimal 15 meter
-    let map = null, userMarker = null;
+    // Variabel Dinamis Titik Sekolah (Diambil dari Supabase via GAS)
+    let sekolahLat = -7.452000; 
+    let sekolahLng = 112.540000;
+    let radiusMaksimal = 15; 
+    let map = null, userMarker = null, sekolahCircle = null;
 
     // Jam Real-time
     setInterval(() => {
@@ -274,6 +275,24 @@
         document.getElementById('live-date').innerText = now.toLocaleDateString('id-ID', options);
         document.getElementById('live-time').innerText = now.toLocaleTimeString('id-ID') + " WIB";
     }, 1000);
+
+    // Ambil Konfigurasi Koordinat Sekolah dari Supabase saat aplikasi dimuat
+    async function ambilKonfigurasiSekolah() {
+        try {
+            const res = await fetch(GAS_WEB_APP_URL, {
+                method: "POST",
+                body: JSON.stringify({ action: "get_lokasi" })
+            });
+            const result = await res.json();
+            if (result.status === "success" && result.data) {
+                sekolahLat = parseFloat(result.data.latitude);
+                sekolahLng = parseFloat(result.data.longitude);
+                radiusMaksimal = parseInt(result.data.radius);
+            }
+        } catch (e) {
+            console.log("Menggunakan koordinat default/fallback.");
+        }
+    }
 
     // --- MANAJEMEN KAMERA ---
     let activeStream = null;
@@ -290,7 +309,7 @@
     }
 
     // --- NAVIGASI HALAMAN (SPA) ---
-    function switchPage(page) {
+    async function switchPage(page) {
         ['page-login', 'page-main', 'page-gps', 'page-face', 'page-enroll', 'page-history', 'page-user'].forEach(p => {
             document.getElementById(p).classList.add('d-none');
         });
@@ -303,6 +322,7 @@
             document.getElementById('nav-main').className = "btn text-primary border-0 d-flex flex-column align-items-center";
             if (activeStream) activeStream.getTracks().forEach(t => t.stop());
         } else if (page === 'gps') {
+            await ambilKonfigurasiSekolah(); // Perbarui titik koordinat terbaru sebelum buka peta
             document.getElementById('page-gps').classList.remove('d-none');
             initMap();
         } else if (page === 'face') {
@@ -344,7 +364,6 @@
 
             if(result.status === "success") {
                 currentUser = result.data;
-                // Simulasi status enroll (bisa disesuaikan dengan kolom database Supabase Anda)
                 if (currentUser.is_enrolled === undefined) currentUser.is_enrolled = false;
 
                 document.getElementById('user-name').innerText = currentUser.nama;
@@ -354,6 +373,9 @@
 
                 document.getElementById('bottom-nav').style.display = "block";
                 document.getElementById('page-login').classList.add('d-none');
+                
+                // Ambil koordinat sekolah saat login sukses
+                await ambilKonfigurasiSekolah();
                 switchPage('main');
             } else {
                 errEl.innerText = result.message || "Login gagal!";
@@ -386,8 +408,12 @@
         if (!map) {
             map = L.map('map').setView([sekolahLat, sekolahLng], 17);
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(map);
-            L.circle([sekolahLat, sekolahLng], { radius: radiusMaksimal, color: 'blue', fillColor: '#f03', fillOpacity: 0.2 }).addTo(map);
+        } else {
+            map.setView([sekolahLat, sekolahLng], 17);
         }
+
+        if (sekolahCircle) map.removeLayer(sekolahCircle);
+        sekolahCircle = L.circle([sekolahLat, sekolahLng], { radius: radiusMaksimal, color: 'blue', fillColor: '#f03', fillOpacity: 0.2 }).addTo(map);
 
         const jarakText = document.getElementById('jarak-text');
         const gpsStatus = document.getElementById('gps-status-info');
@@ -433,7 +459,6 @@
     // --- LANJUT KE KAMERA & CEK ENROLL WAJAH ---
     function lanjutKeKamera() {
         if (!currentUser.is_enrolled) {
-            // Tampilkan Modal Peringatan Bootstrap
             var myModal = new bootstrap.Modal(document.getElementById('modalEnrollWarning'));
             myModal.show();
             return;
@@ -444,7 +469,6 @@
     }
 
     function keHalamanEnroll() {
-        // Tutup modal jika terbuka
         var modalEl = document.getElementById('modalEnrollWarning');
         var modal = bootstrap.Modal.getInstance(modalEl);
         if(modal) modal.hide();
@@ -452,7 +476,7 @@
         switchPage('enroll');
     }
 
-    // --- ENROLL WAJAH (DENGAN KOMPRESI & CLOUDINARY) ---
+    // --- ENROLL WAJAH ---
     async function prosesEnroll() {
         const msg = document.getElementById('enroll-msg');
         msg.className = "text-primary";
@@ -461,10 +485,10 @@
         try {
             const video = document.getElementById('video-enroll');
             const canvas = document.createElement('canvas');
-            canvas.width = 300; // Kompres resolusi agar kecil
+            canvas.width = 300; 
             canvas.height = 225;
             canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
-            const base64Img = canvas.toDataURL('image/jpeg', 0.6); // Kompres kualitas 60%
+            const base64Img = canvas.toDataURL('image/jpeg', 0.6); 
 
             const formData = new FormData();
             formData.append("file", base64Img);
@@ -475,7 +499,7 @@
 
             if(!cloudData.secure_url) throw new Error("Gagal upload foto ke Cloudinary.");
 
-            currentUser.is_enrolled = true; // Tandai sudah ter-enroll
+            currentUser.is_enrolled = true; 
             msg.className = "text-success";
             msg.innerText = "Wajah berhasil direkam dan disimpan ke Cloud!";
             setTimeout(() => switchPage('main'), 1500);
@@ -494,12 +518,11 @@
         try {
             const video = document.getElementById('video-preview');
             const canvas = document.createElement('canvas');
-            canvas.width = 300; // Kompres resolusi
+            canvas.width = 300; 
             canvas.height = 225;
             canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
-            const base64Image = canvas.toDataURL('image/jpeg', 0.6); // Kompres kualitas 60%
+            const base64Image = canvas.toDataURL('image/jpeg', 0.6); 
 
-            // Upload ke Cloudinary
             const formData = new FormData();
             formData.append("file", base64Image);
             formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
@@ -509,7 +532,6 @@
             
             if (!cloudData.secure_url) throw new Error("Gagal upload foto absensi");
 
-            // Kirim ke GAS & Supabase
             const payload = {
                 action: "absen",
                 nisn: currentUser.nisn,
