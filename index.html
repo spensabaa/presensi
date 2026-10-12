@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Absensi Siswa Pintar</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome untuk Icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { background-color: #f8f9fa; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .app-container { max-width: 480px; margin: 0 auto; background: #ffffff; min-height: 100vh; display: flex; flex-direction: column; box-shadow: 0 0 15px rgba(0,0,0,0.1); position: relative; }
+        .content-area { flex: 1; padding: 20px; padding-bottom: 80px; overflow-y: auto; }
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; max-width: 480px; margin: 0 auto; background: #ffffff; border-top: 1px solid #dee2e6; z-index: 1000; }
+        video, canvas { width: 100%; max-height: 220px; object-fit: cover; border-radius: 10px; background: #000; }
+        .status-badge { font-size: 0.85rem; padding: 5px 10px; }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+
+    <!-- ================= 1. HALAMAN LOGIN ================= -->
+    <div id="page-login" class="content-area d-flex flex-column justify-content-center align-items-center">
+        <div class="text-center mb-4">
+            <i class="fa-solid fa-school-circle-check fa-3x text-primary mb-3"></i>
+            <h3>Portal Absensi Siswa</h3>
+            <p class="text-muted">Silakan login menggunakan NISN & Password</p>
+        </div>
+        <div class="w-100 px-3">
+            <div class="mb-3">
+                <label class="form-label">NISN Siswa</label>
+                <input type="text" id="login-nisn" class="form-control" placeholder="Contoh: 0081234567">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Password</label>
+                <input type="password" id="login-pass" class="form-control" placeholder="Masukkan password">
+            </div>
+            <button onclick="prosesLogin()" class="btn btn-primary w-100 py-2">Masuk Aplikasi</button>
+            <div id="login-error" class="text-danger text-center mt-2 small"></div>
+        </div>
+    </div>
+
+    <!-- ================= 2. HALAMAN UTAMA APLIKASI ================= -->
+    <div id="page-main" class="content-area d-none">
+        
+        <!-- LAYER ATAS: Tanggal & Waktu -->
+        <div class="card bg-primary text-white mb-3 shadow-sm">
+            <div class="card-body text-center py-2">
+                <h5 id="live-date" class="mb-0 fw-bold">Senin, 12 Oktober 2026</h5>
+                <h2 id="live-time" class="mb-0 fw-bolder">00:00:00 WIB</h2>
+            </div>
+        </div>
+
+        <!-- LAYER TENGAH: Nama Siswa & NISN -->
+        <div class="card bg-light border-0 mb-3 shadow-sm">
+            <div class="card-body py-2 d-flex align-items-center">
+                <div class="flex-grow-1">
+                    <h6 class="text-muted mb-0 small">Siswa Masuk:</h6>
+                    <h5 id="user-name" class="fw-bold mb-0 text-dark">Setyo (Tio)</h5>
+                    <span id="user-nisn-display" class="badge bg-secondary">NISN: 0081234567</span>
+                </div>
+                <div class="text-end">
+                    <i class="fa-solid fa-user-graduate fa-2x text-primary"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- LAYER BAWAH 1: Status (Matriks Wajah, Verifikasi Wajah, GPS) -->
+        <div class="card mb-3 shadow-sm">
+            <div class="card-header bg-white py-2 fw-bold small text-secondary">
+                <i class="fa-solid fa-shield-halved"></i> Status Sensor & Validasi
+            </div>
+            <div class="card-body py-2">
+                <ul class="list-group list-group-flush small">
+                    <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                        <span>Matriks Wajah (Kamera)</span>
+                        <span id="status-matrix" class="badge bg-warning status-badge">Menyiapkan...</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                        <span>Verifikasi Kehadiran Wajah</span>
+                        <span id="status-face" class="badge bg-secondary status-badge">Belum Dipindai</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                        <span>Status Titik Koordinat (GPS)</span>
+                        <span id="status-gps" class="badge bg-warning status-badge">Mendeteksi GPS...</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- LAYER BAWAH 2: Jadwal Datang & Pulang Per Hari -->
+        <div class="card mb-3 shadow-sm">
+            <div class="card-header bg-white py-2 fw-bold small text-secondary">
+                <i class="fa-solid fa-calendar-days"></i> Jadwal Hari Ini
+            </div>
+            <div class="card-body py-2 d-flex justify-content-around text-center">
+                <div>
+                    <span class="text-muted small d-block">Datang</span>
+                    <strong class="text-success" id="jadwal-datang">07:00 WIB</strong>
+                </div>
+                <div class="vr"></div>
+                <div>
+                    <span class="text-muted small d-block">Pulang</span>
+                    <strong class="text-danger" id="jadwal-pulang">14:00 WIB</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- LAYER BAWAH 3: Menu Tombol Absen (Datang & Pulang) -->
+        <div class="card shadow-sm border-primary">
+            <div class="card-body text-center">
+                <div class="mb-3">
+                    <video id="video-preview" autoplay playsinline></video>
+                    <canvas id="canvas-capture" class="d-none"></canvas>
+                </div>
+                <div class="row g-2">
+                    <div class="col-6">
+                        <button onclick="kirimAbsen('Datang')" class="btn btn-success w-100 py-2 fw-bold">
+                            <i class="fa-solid fa-right-to-bracket"></i> Absen Datang
+                        </button>
+                    </div>
+                    <div class="col-6">
+                        <button onclick="kirimAbsen('Pulang')" class="btn btn-danger w-100 py-2 fw-bold">
+                            <i class="fa-solid fa-right-from-bracket"></i> Absen Pulang
+                        </button>
+                    </div>
+                </div>
+                <div id="absen-status-msg" class="mt-2 small fw-bold text-center"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ================= 3. HALAMAN HISTORY ================= -->
+    <div id="page-history" class="content-area d-none">
+        <h4 class="mb-3 fw-bold">Riwayat Absensi</h4>
+        <div id="history-list">
+            <div class="card mb-2 shadow-sm">
+                <div class="card-body py-2 d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="mb-0 fw-bold">Senin, 12 Okt 2026</h6>
+                        <small class="text-muted">Datang: 06:55 WIB | GPS OK</small>
+                    </div>
+                    <span class="badge bg-success">Hadir</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= 4. HALAMAN USER & GANTI PASSWORD ================= -->
+    <div id="page-user" class="content-area d-none">
+        <h4 class="mb-3 fw-bold">Profil & Keamanan</h4>
+        <div class="card shadow-sm mb-3">
+            <div class="card-body">
+                <h6 class="text-muted mb-1">Informasi Akun</h6>
+                <p class="mb-1"><strong>Nama:</strong> <span id="profile-name">Setyo</span></p>
+                <p class="mb-0"><strong>NISN:</strong> <span id="profile-nisn">0081234567</span></p>
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-header bg-white fw-bold">Ganti Password</div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <label class="form-label">Password Lama</label>
+                    <input type="password" id="old-pass" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Password Baru</label>
+                    <input type="password" id="new-pass" class="form-control">
+                </div>
+                <button onclick="gantiPassword()" class="btn btn-warning w-100 text-white">Simpan Password Baru</button>
+                <div id="pass-msg" class="mt-2 text-center small fw-bold"></div>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <button onclick="logout()" class="btn btn-outline-danger w-100">
+                <i class="fa-solid fa-right-from-bracket"></i> Keluar Akun
+            </button>
+        </div>
+    </div>
+
+    <!-- ================= NAVIGATION BAR BAWAH ================= -->
+    <nav class="bottom-nav navbar navbar-light bg-white border-top px-4 py-2">
+        <div class="container-fluid d-flex justify-content-around">
+            <button onclick="switchPage('main')" id="nav-main" class="btn text-primary border-0 d-flex flex-column align-items-center">
+                <i class="fa-solid fa-house fa-lg"></i>
+                <small style="font-size: 10px;">Home</small>
+            </button>
+            <button onclick="switchPage('history')" id="nav-history" class="btn text-muted border-0 d-flex flex-column align-items-center">
+                <i class="fa-solid fa-clock-rotate-left fa-lg"></i>
+                <small style="font-size: 10px;">History</small>
+            </button>
+            <button onclick="switchPage('user')" id="nav-user" class="btn text-muted border-0 d-flex flex-column align-items-center">
+                <i class="fa-solid fa-user fa-lg"></i>
+                <small style="font-size: 10px;">User</small>
+            </button>
+        </div>
+    </nav>
+
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // --- KONFIGURASI API ---
+    const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbx5Vaww8_1mV9DFTvkAyn_OtC-P42Gs0Ts-Ust1Pb6klmpqmyG4S3L4rNgeKZdNHixr3Q/exec";
+    const CLOUDINARY_CLOUD_NAME = "v00gekff";
+    const CLOUDINARY_UPLOAD_PRESET = "ml_default";
+
+    // Data Simulasi Sesi Login Aktif
+    let currentUser = {
+        name: "Setyo (Tio)",
+        nisn: "0081234567"
+    };
+
+    let userLat = null;
+    let userLng = null;
+    const sekolahLat = -7.452000; // Koordinat contoh sekolah
+    const sekolahLng = 112.540000;
+    const radiusMaksimal = 100; // dalam meter
+
+    // Jam Real-time Atas
+    setInterval(() => {
+        const now = new Date();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('live-date').innerText = now.toLocaleDateString('id-ID', options);
+        document.getElementById('live-time').innerText = now.toLocaleTimeString('id-ID') + " WIB";
+    }, 1000);
+
+    // Inisialisasi Kamera & GPS saat halaman aktif dimuat
+    function initSensors() {
+        // 1. Kamera
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                document.getElementById('video-preview').srcObject = stream;
+                document.getElementById('status-matrix').className = "badge bg-success status-badge";
+                document.getElementById('status-matrix').innerText = "Aktif (Matriks Siap)";
+                document.getElementById('status-face').className = "badge bg-info status-badge";
+                document.getElementById('status-face').innerText = "Wajah Terdeteksi";
+            })
+            .catch(err => {
+                document.getElementById('status-matrix').className = "badge bg-danger status-badge";
+                document.getElementById('status-matrix').innerText = "Kamera Gagal";
+            });
+
+        // 2. GPS Geolocation
+        if (navigator.geolocation) {
+            navigator.geolocation.watchPosition(position => {
+                userLat = position.coords.latitude;
+                userLng = position.coords.longitude;
+                
+                const jarak = hitungJarak(userLat, userLng, sekolahLat, sekolahLng);
+                const gpsBadge = document.getElementById('status-gps');
+                
+                if (jarak <= radiusMaksimal) {
+                    gpsBadge.className = "badge bg-success status-badge";
+                    gpsBadge.innerText = `Dalam Radius (${Math.round(jarak)}m)`;
+                } else {
+                    gpsBadge.className = "badge bg-danger status-badge";
+                    gpsBadge.innerText = `Luar Radius (${Math.round(jarak)}m)`;
+                }
+            }, error => {
+                document.getElementById('status-gps').className = "badge bg-danger status-badge";
+                document.getElementById('status-gps').innerText = "GPS Tidak Aktif";
+            }, { enableHighAccuracy: true });
+        }
+    }
+
+    // Hitung Jarak Haversine
+    function hitungJarak(lat1, lon1, lat2, lon2) {
+        const R = 6371e3;
+        const φ1 = lat1 * Math.PI/180, φ2 = lat2 * Math.PI/180;
+        const Δφ = (lat2-lat1) * Math.PI/180, Δλ = (lon2-lon1) * Math.PI/180;
+        const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) + Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ/2) * Math.sin(Δλ/2);
+        return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)));
+    }
+
+    // --- NAVIGASI HALAMAN (SPA) ---
+    function switchPage(page) {
+        ['page-login', 'page-main', 'page-history', 'page-user'].forEach(p => {
+            document.getElementById(p).classList.add('d-none');
+        });
+        ['nav-main', 'nav-history', 'nav-user'].forEach(n => {
+            document.getElementById(n).className = "btn text-muted border-0 d-flex flex-column align-items-center";
+        });
+
+        if (page === 'main') {
+            document.getElementById('page-main').classList.remove('d-none');
+            document.getElementById('nav-main').className = "btn text-primary border-0 d-flex flex-column align-items-center";
+        } else if (page === 'history') {
+            document.getElementById('page-history').classList.remove('d-none');
+            document.getElementById('nav-history').className = "btn text-primary border-0 d-flex flex-column align-items-center";
+        } else if (page === 'user') {
+            document.getElementById('page-user').classList.remove('d-none');
+            document.getElementById('nav-user').className = "btn text-primary border-0 d-flex flex-column align-items-center";
+        }
+    }
+
+    // --- FITUR LOGIN ---
+    function prosesLogin() {
+        const nisn = document.getElementById('login-nisn').value;
+        const pass = document.getElementById('login-pass').value;
+        
+        if(!nisn || !pass) {
+            document.getElementById('login-error').innerText = "NISN dan Password harus diisi!";
+            return;
+        }
+
+        // Contoh validasi sukses
+        currentUser.nisn = nisn;
+        document.getElementById('user-name').innerText = currentUser.name;
+        document.getElementById('user-nisn-display').innerText = "NISN: " + nisn;
+        document.getElementById('profile-name').innerText = currentUser.name;
+        document.getElementById('profile-nisn').innerText = nisn;
+
+        // Pindah ke halaman utama
+        document.getElementById('page-login').classList.add('d-none');
+        switchPage('main');
+        initSensors();
+    }
+
+    function logout() {
+        document.getElementById('page-main').classList.add('d-none');
+        document.getElementById('page-user').classList.add('d-none');
+        document.getElementById('page-login').classList.remove('d-none');
+    }
+
+    // --- GANTI PASSWORD ---
+    function gantiPassword() {
+        const oldPass = document.getElementById('old-pass').value;
+        const newPass = document.getElementById('new-pass').value;
+        const msg = document.getElementById('pass-msg');
+
+        if(!oldPass || !newPass) {
+            msg.className = "mt-2 text-center small fw-bold text-danger";
+            msg.innerText = "Semua kolom password wajib diisi!";
+            return;
+        }
+
+        // Kirim request ganti password ke GAS (jika diperlukan)
+        msg.className = "mt-2 text-center small fw-bold text-success";
+        msg.innerText = "Password berhasil diperbarui!";
+    }
+
+    // --- KELOLA ABSENSI (KIRIM KE CLOUDINARY & GAS) ---
+    async function kirimAbsen(statusTipe) {
+        const msgEl = document.getElementById('absen-status-msg');
+        
+        if (userLat === null || userLng === null) {
+            msgEl.className = "mt-2 small fw-bold text-danger";
+            msgEl.innerText = "Gagal: Posisi GPS belum terkunci!";
+            return;
+        }
+
+        msgEl.className = "mt-2 small fw-bold text-primary";
+        msgEl.innerText = "Mengambil foto wajah...";
+
+        try {
+            // 1. Ambil Tangkapan Kamera ke Canvas
+            const video = document.getElementById('video-preview');
+            const canvas = document.getElementById('canvas-capture');
+            canvas.width = 400;
+            canvas.height = 300;
+            canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+            const base64Image = canvas.toDataURL('image/jpeg', 0.7);
+
+            // 2. Upload Langsung ke Cloudinary
+            msgEl.innerText = "Mengunggah foto ke Cloudinary...";
+            const formData = new FormData();
+            formData.append("file", base64Image);
+            formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+
+            const cloudRes = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
+                method: "POST",
+                body: formData
+            });
+            const cloudData = await cloudRes.json();
+            
+            if (!cloudData.secure_url) throw new Error("Gagal upload foto ke Cloudinary");
+            const imageUrl = cloudData.secure_url;
+
+            // 3. Kirim Data ke Google Apps Script (GAS)
+            msgEl.innerText = "Menyimpan ke Database Supabase via GAS...";
+            const payload = {
+                nisn: currentUser.nisn,
+                nama: currentUser.name,
+                statusAbsen: statusTipe, // 'Datang' atau 'Pulang'
+                latitude: userLat,
+                longitude: userLng,
+                imageUrl: imageUrl
+            };
+
+            const gasRes = await fetch(GAS_WEB_APP_URL, {
+                method: "POST",
+                body: JSON.stringify(payload)
+            });
+            const gasResult = await gasRes.json();
+
+            if(gasResult.status === "success") {
+                msgEl.className = "mt-2 small fw-bold text-success";
+                msgEl.innerText = `Absen ${statusTipe} Berhasil Dicatat!`;
+            } else {
+                throw new Error(gasResult.message || "Gagal mencatat di backend");
+            }
+
+        } catch (error) {
+            msgEl.className = "mt-2 small fw-bold text-danger";
+            msgEl.innerText = "Error: " + error.message;
+        }
+    }
+</script>
+
+</body>
+</html>
