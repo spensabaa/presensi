@@ -264,9 +264,31 @@
             L.marker([lat, lng]).addTo(adminMap).bindPopup("Titik Pusat Sekolah").openPopup();
         }
 
-        function simpanKonfigurasiGPS() {
-            alert("Pengaturan koordinat dan radius sekolah berhasil disimpan!");
-            initAdminMap();
+        async function simpanKonfigurasiGPS() {
+            const lat = document.getElementById('set-lat').value;
+            const lng = document.getElementById('set-lng').value;
+            const radius = document.getElementById('set-radius').value;
+        
+            try {
+                const res = await fetch(GAS_WEB_APP_URL, {
+                    method: "POST",
+                    body: JSON.stringify({
+                        action: "simpan_lokasi",
+                        latitude: parseFloat(lat),
+                        longitude: parseFloat(lng),
+                        radius: parseInt(radius)
+                    })
+                });
+                const result = await res.json();
+                if(result.status === "success") {
+                    alert("Titik koordinat sekolah berhasil disimpan ke database!");
+                    initAdminMap();
+                } else {
+                    alert("Gagal menyimpan ke database.");
+                }
+            } catch (e) {
+                alert("Terjadi kesalahan koneksi.");
+            }
         }
 
         // Load Data Rekapitulasi Absensi dari Supabase via GAS
