@@ -17,30 +17,43 @@
     <script defer src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
     
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; overflow: hidden; height: 100vh; }
-        .app-container { max-width: 480px; height: 100vh; margin: 0 auto; background: #f8fafc; position: relative; box-shadow: 0 0 25px rgba(0,0,0,0.08); display: flex; flex-direction: column; overflow: hidden; }
+        body { font-family: 'Inter', sans-serif; background-color: #0f172a; overflow: hidden; height: 100vh; }
+        .app-container { max-width: 480px; height: 100vh; margin: 0 auto; background: #f8fafc; position: relative; box-shadow: 0 0 25px rgba(0,0,0,0.3); display: flex; flex-direction: column; overflow: hidden; }
         .main-content { flex: 1; padding: 12px 16px; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; }
         .video-container { position: relative; width: 100%; height: 220px; background: #000; border-radius: 12px; overflow: hidden; }
         video, canvas { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; }
         #map { height: 180px; border-radius: 12px; margin-bottom: 10px; }
         .sub-page { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: #f8fafc; z-index: 50; display: flex; flex-direction: column; padding: 16px; overflow: hidden; }
+        
+        /* Background Login dengan Pola Elegan */
+        .login-bg {
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.9), rgba(16, 185, 129, 0.9)), url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=1000&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+        }
     </style>
 </head>
-<body class="bg-slate-100">
+<body class="flex justify-center items-center">
 
 <div class="app-container">
 
     <!-- ================= HALAMAN LOGIN ================= -->
-    <div id="page-login" class="main-content flex flex-col justify-center items-center px-4">
-        <div class="text-center mb-5">
-            <div class="w-14 h-14 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-2 shadow-inner">
-                <i class="fa-solid fa-school-circle-check text-2xl"></i>
+    <div id="page-login" class="main-content login-bg flex flex-col justify-center items-center px-6 text-white">
+        <!-- Floating Icons Dekoratif di Background Login -->
+        <div class="absolute top-8 left-8 text-white/20 text-4xl animate-pulse"><i class="fa-solid fa-graduation-cap"></i></div>
+        <div class="absolute top-16 right-8 text-white/20 text-3xl"><i class="fa-solid fa-shield-halved"></i></div>
+        <div class="absolute bottom-24 left-10 text-white/20 text-3xl"><i class="fa-solid fa-location-dot"></i></div>
+        <div class="absolute bottom-28 right-10 text-white/20 text-4xl animate-bounce"><i class="fa-solid fa-face-smile"></i></div>
+
+        <div class="text-center mb-5 z-10">
+            <div class="w-16 h-16 bg-white/20 backdrop-blur-md text-white rounded-2xl flex items-center justify-center mx-auto mb-2 shadow-lg border border-white/30">
+                <i class="fa-solid fa-school-circle-check text-3xl"></i>
             </div>
-            <h3 class="text-lg font-bold text-slate-800">Portal Absensi</h3>
-            <p class="text-xs text-slate-500">Silakan login menggunakan NISN & Password</p>
+            <h3 class="text-xl font-bold tracking-wide">Portal Absensi</h3>
+            <p class="text-xs text-white/80 mt-0.5">Sistem Verifikasi Wajah & Lokasi Sekolah</p>
         </div>
         
-        <div class="w-full bg-white p-5 rounded-2xl shadow-sm border border-slate-100">
+        <div class="w-full bg-white/95 backdrop-blur-md text-slate-800 p-5 rounded-3xl shadow-xl border border-white/40 z-10">
             <div class="mb-3">
                 <label class="block text-[11px] font-semibold text-slate-600 mb-1">NISN Siswa</label>
                 <div class="relative">
@@ -58,16 +71,15 @@
             </div>
 
             <button onclick="prosesLogin()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-xl shadow-md transition duration-200 text-xs">Masuk Aplikasi</button>
-            <div id="login-error" class="text-red-500 text-center mt-2 text-[11px] font-semibold"></div>
+            <div id="login-error" class="text-rose-500 text-center mt-2 text-[11px] font-semibold"></div>
         </div>
     </div>
 
     <!-- ================= HALAMAN UTAMA (HOME) ================= -->
     <div id="page-main" class="main-content hidden">
-        
         <!-- Box Jam & Tanggal -->
         <div class="bg-gradient-to-r from-blue-600 to-emerald-500 text-white text-center py-2.5 px-3 rounded-xl shadow-sm">
-            <div id="live-date" class-[text-10px] opacity-90 font-medium">-</div>
+            <div id="live-date" class="text-[10px] opacity-90 font-medium">-</div>
             <h2 id="live-time" class="text-xl font-bold tracking-tight">00:00:00 WIB</h2>
         </div>
 
@@ -163,7 +175,7 @@
         <div></div>
     </div>
 
-    <!-- ================= BOTTOM NAVIGATION BAR (MUNCUL SETELAH LOGIN) ================= -->
+    <!-- ================= BOTTOM NAVIGATION BAR ================= -->
     <nav id="bottom-nav" class="absolute bottom-0 left-0 right-0 max-w-[480px] mx-auto bg-white border-t border-slate-200 z-40 py-2 px-6 flex justify-around items-center hidden shadow-lg">
         <button onclick="switchPage('main')" id="nav-main" class="flex flex-col items-center text-blue-600">
             <i class="fa-solid fa-house text-base mb-0.5"></i>
@@ -269,6 +281,9 @@
     let faceDetectionInterval = null, activeStream = null;
 
     window.addEventListener('DOMContentLoaded', async () => {
+        // Cek apakah halaman di-refresh, reset sesi login
+        sessionStorage.clear();
+        
         try {
             await faceapi.nets.tinyFaceDetector.loadFromUri('https://justadudewhohacks.github.io/face-api.js/models');
         } catch (e) {}
