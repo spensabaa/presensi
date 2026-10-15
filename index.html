@@ -68,7 +68,7 @@
             background: white;
             border-top: 1px solid #dbdbdb;
             z-index: 100;
-            display: none;
+            display: none; /* Pastikan tersembunyi sebelum login */
         }
         .sub-page {
             position: absolute;
@@ -89,9 +89,9 @@
 
     <!-- ================= HALAMAN LOGIN ================= -->
     <div id="page-login" class="main-content is-flex is-flex-direction-column is-justify-content-center">
-        <div class="has-text-centered mb-5">
-            <span class="icon is-large has-text-link mb-3">
-                <i class="fa-solid fa-school-circle-check fa-3x"></i>
+        <div class="has-text-centered mb-5 pt-4">
+            <span class="icon is-large has-text-link mb-2" style="font-size: 2.5rem;">
+                <i class="fa-solid fa-school-circle-check"></i>
             </span>
             <h3 class="title is-4 has-text-weight-bold mb-1">Portal Absensi</h3>
             <p class="subtitle is-6 has-text-grey">Silakan login menggunakan NISN & Password</p>
@@ -322,10 +322,9 @@
         muatJadwalHarian();
     });
 
-    // Fungsi untuk menetapkan jadwal berdasarkan hari secara otomatis
     function muatJadwalHarian() {
         const now = new Date();
-        const hariIndex = now.getDay(); // 0 = Minggu, 1 = Senin, dst.
+        const hariIndex = now.getDay();
         
         let jadwalDatang = "07:00 WIB";
         let jadwalPulang = "13:00 WIB";
@@ -342,7 +341,7 @@
         } else if (hariIndex === 6) { // Sabtu
             jadwalDatang = "07:00 WIB";
             jadwalPulang = "11:30 WIB";
-        } else { // Minggu (Libur)
+        } else { // Minggu
             jadwalDatang = "Libur";
             jadwalPulang = "Libur";
         }
