@@ -12,7 +12,7 @@
     <script nomodule src="https://cdn.jsdelivr.net/npm/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <!-- Ionic CSS Framework -->
     <link href="https://cdn.jsdelivr.net/npm/@ionic/core@7.6.0/css/ionic.bundle.css" rel="stylesheet">
-    <!-- Bootstrap Utilities (opsional untuk helper margin/padding) -->
+    <!-- Bootstrap Utilities -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap-utilities.min.css" rel="stylesheet">
     <!-- Leaflet CSS untuk Peta -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -23,12 +23,16 @@
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f4f5f8;
+            margin: 0;
+            padding: 0;
         }
         .app-container {
             max-width: 480px;
             margin: 0 auto;
             height: 100vh;
             box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
         }
         .video-container {
             position: relative;
@@ -60,34 +64,36 @@
 
 <ion-app class="app-container">
 
-    <!-- ================= HALAMAN LOGIN ================= -->
-    <ion-content id="page-login" class="ion-padding ion-text-center d-flex flex-column justify-content-center">
-        <div class="my-auto py-5">
-            <div class="mb-4">
-                <ion-icon name="school-outline" style="font-size: 64px; color: var(--ion-color-primary);"></ion-icon>
-                <h2 class="fw-bold mt-3">Portal Absensi</h2>
-                <p class="text-muted small">Silakan login menggunakan NISN & Password</p>
-            </div>
-            
-            <div class="text-start px-2">
-                <ion-item class="rounded-3 mb-3 border">
-                    <ion-input id="login-nisn" label="NISN Siswa" label-placement="stacked" placeholder="Contoh: 0081234567"></ion-input>
-                </ion-item>
+    <!-- ================= HALAMAN LOGIN (DEFAULT MUNCUL) ================= -->
+    <div id="page-login" class="w-100 h-100 d-flex flex-column justify-content-center bg-white position-absolute top-0 start-0" style="z-index: 100;">
+        <ion-content class="ion-padding ion-text-center">
+            <div class="my-auto py-5">
+                <div class="mb-4 pt-4">
+                    <ion-icon name="school-outline" style="font-size: 64px; color: var(--ion-color-primary);"></ion-icon>
+                    <h2 class="fw-bold mt-3">Portal Absensi</h2>
+                    <p class="text-muted small">Silakan login menggunakan NISN & Password</p>
+                </div>
                 
-                <ion-item class="rounded-3 mb-4 border">
-                    <ion-input id="login-pass" type="password" label="Password" label-placement="stacked" placeholder="Masukkan password"></ion-input>
-                </ion-item>
+                <div class="text-start px-2">
+                    <ion-item class="rounded-3 mb-3 border">
+                        <ion-input id="login-nisn" label="NISN Siswa" label-placement="stacked" placeholder="Contoh: 0081234567"></ion-input>
+                    </ion-item>
+                    
+                    <ion-item class="rounded-3 mb-4 border">
+                        <ion-input id="login-pass" type="password" label="Password" label-placement="stacked" placeholder="Masukkan password"></ion-input>
+                    </ion-item>
 
-                <ion-button expand="block" shape="round" onclick="prosesLogin()" class="fw-bold py-2 shadow-sm">
-                    Masuk Aplikasi
-                </ion-button>
-                <div id="login-error" class="text-danger text-center mt-3 small fw-semibold"></div>
+                    <ion-button expand="block" shape="round" onclick="prosesLogin()" class="fw-bold py-2 shadow-sm">
+                        Masuk Aplikasi
+                    </ion-button>
+                    <div id="login-error" class="text-danger text-center mt-3 small fw-semibold"></div>
+                </div>
             </div>
-        </div>
-    </ion-content>
+        </ion-content>
+    </div>
 
     <!-- ================= TAB UTAMA CONTAINER ================= -->
-    <div id="main-tabs-container" class="d-none w-100 h-100 d-flex flex-column">
+    <div id="main-tabs-container" class="d-none w-100 h-100 d-flex flex-column position-absolute top-0 start-0">
         
         <ion-tabs class="flex-grow-1">
             
@@ -170,7 +176,7 @@
                         <ion-card-content class="text-center py-5">
                             <ion-icon name="time-outline" style="font-size: 48px; color: var(--ion-color-medium);"></ion-icon>
                             <h6 class="fw-bold mt-3">Log Riwayat Presensi</h6>
-                            <p class="text-muted small">Data tersinkronisasi otomatis dengan database Supabase & Google Sheets.</p>
+                            <p class="text-muted small">Data tersinkronisasi otomatis dengan database.</p>
                         </ion-card-content>
                     </ion-card>
                 </ion-content>
@@ -209,7 +215,7 @@
                 </ion-content>
             </ion-router-outlet>
 
-            <!-- BOTTOM TAB BAR (IONIC TAB BAR) -->
+            <!-- BOTTOM TAB BAR -->
             <ion-tab-bar slot="bottom" id="bottom-nav">
                 <ion-tab-button tab="home" onclick="switchTab('home')" id="nav-home" class="text-primary">
                     <ion-icon name="home"></ion-icon>
@@ -228,10 +234,10 @@
         </ion-tabs>
     </div>
 
-    <!-- ================= HALAMAN SUB-MENU (GPS, KAMERA, ENROLL) ================= -->
+    <!-- ================= SUB-HALAMAN (GPS, KAMERA, ENROLL) ================= -->
 
     <!-- HALAMAN GPS -->
-    <div id="page-gps" class="d-none w-100 h-100 d-flex flex-column bg-light position-absolute top-0 start-0 z-3">
+    <div id="page-gps" class="d-none w-100 h-100 d-flex flex-column bg-light position-absolute top-0 start-0" style="z-index: 50;">
         <ion-header>
             <ion-toolbar color="primary">
                 <ion-buttons slot="start">
@@ -260,7 +266,7 @@
     </div>
 
     <!-- HALAMAN VERIFIKASI WAJAH -->
-    <div id="page-face" class="d-none w-100 h-100 d-flex flex-column bg-light position-absolute top-0 start-0 z-3">
+    <div id="page-face" class="d-none w-100 h-100 d-flex flex-column bg-light position-absolute top-0 start-0" style="z-index: 50;">
         <ion-header>
             <ion-toolbar color="primary">
                 <ion-buttons slot="start">
@@ -288,7 +294,7 @@
     </div>
 
     <!-- HALAMAN ENROLL WAJAH -->
-    <div id="page-enroll" class="d-none w-100 h-100 d-flex flex-column bg-light position-absolute top-0 start-0 z-3">
+    <div id="page-enroll" class="d-none w-100 h-100 d-flex flex-column bg-light position-absolute top-0 start-0" style="z-index: 50;">
         <ion-header>
             <ion-toolbar color="primary">
                 <ion-buttons slot="start">
@@ -315,21 +321,21 @@
         </ion-content>
     </div>
 
-</ion-app>
-
-<!-- MODAL PERINGATAN ENROLL (Ionic Alert / Bootstrap Modal) -->
-<div class="modal fade" id="modalEnrollWarning" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered p-3">
-        <div class="modal-content border-0 rounded-4">
-            <div class="modal-body text-center py-4">
-                <ion-icon name="warning-outline" style="font-size: 48px; color: var(--ion-color-warning);" class="mb-2"></ion-icon>
-                <h5 class="fw-bold">Wajah Belum Direkam!</h5>
-                <p class="text-muted small mb-4">Silakan daftarkan wajah Anda terlebih dahulu sebelum absen.</p>
-                <ion-button expand="block" shape="round" onclick="keHalamanEnroll()">Daftar Sekarang</ion-button>
+    <!-- MODAL PERINGATAN ENROLL (DI DALAM ION-APP) -->
+    <div class="modal fade" id="modalEnrollWarning" tabindex="-1" aria-hidden="true" style="z-index: 9999;">
+        <div class="modal-dialog modal-dialog-centered p-3">
+            <div class="modal-content border-0 rounded-4 shadow">
+                <div class="modal-body text-center py-4">
+                    <ion-icon name="warning-outline" style="font-size: 48px; color: var(--ion-color-warning);" class="mb-2"></ion-icon>
+                    <h5 class="fw-bold">Wajah Belum Direkam!</h5>
+                    <p class="text-muted small mb-4">Silakan daftarkan wajah Anda terlebih dahulu sebelum absen.</p>
+                    <ion-button expand="block" shape="round" onclick="keHalamanEnroll()">Daftar Sekarang</ion-button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+
+</ion-app>
 
 <!-- JS Dependencies -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -347,7 +353,6 @@
     let map = null, userMarker = null, sekolahCircle = null;
     let faceDetectionInterval = null, activeStream = null;
 
-    // Load AI Model Face-API
     window.addEventListener('DOMContentLoaded', async () => {
         try {
             await faceapi.nets.tinyFaceDetector.loadFromUri('https://justadudewhohacks.github.io/face-api.js/models');
@@ -357,11 +362,14 @@
         }
     });
 
-    // Realtime Jam & Tanggal
     setInterval(() => {
         const now = new Date();
-        document.getElementById('live-date').innerText = now.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-        document.getElementById('live-time').innerText = now.toLocaleTimeString('id-ID') + " WIB";
+        const dateEl = document.getElementById('live-date');
+        const timeEl = document.getElementById('live-time');
+        if(dateEl && timeEl) {
+            dateEl.innerText = now.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            timeEl.innerText = now.toLocaleTimeString('id-ID') + " WIB";
+        }
     }, 1000);
 
     async function ambilKonfigurasiSekolah() {
@@ -380,7 +388,8 @@
         try {
             if (activeStream) activeStream.getTracks().forEach(t => t.stop());
             activeStream = await navigator.mediaDevices.getUserMedia({ video: { width: 400, height: 300 } });
-            document.getElementById(videoElementId).srcObject = activeStream;
+            const videoEl = document.getElementById(videoElementId);
+            if(videoEl) videoEl.srcObject = activeStream;
         } catch (err) {
             alert("Gagal mengakses kamera perangkat.");
         }
@@ -390,17 +399,14 @@
         if (faceDetectionInterval) clearInterval(faceDetectionInterval);
         if (activeStream) activeStream.getTracks().forEach(t => t.stop());
 
-        // Sembunyikan sub-halaman khusus
         document.getElementById('page-gps').classList.add('d-none');
         document.getElementById('page-face').classList.add('d-none');
         document.getElementById('page-enroll').classList.add('d-none');
 
-        // Toggle Tabs
         document.getElementById('tab-home').classList.toggle('d-none', tabName !== 'home');
         document.getElementById('tab-history').classList.toggle('d-none', tabName !== 'history');
         document.getElementById('tab-user').classList.toggle('d-none', tabName !== 'user');
 
-        // Highlight Active Tab Button
         ['home', 'history', 'user'].forEach(t => {
             const btn = document.getElementById(`nav-${t}`);
             if(btn) btn.classList.toggle('text-primary', t === tabName);
@@ -483,37 +489,40 @@
     }
 
     function initMap() {
-        if (!map) {
-            map = L.map('map').setView([sekolahLat, sekolahLng], 17);
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(map);
-        } else {
-            map.setView([sekolahLat, sekolahLng], 17);
-        }
-        if (sekolahCircle) map.removeLayer(sekolahCircle);
-        sekolahCircle = L.circle([sekolahLat, sekolahLng], { radius: radiusMaksimal, color: 'blue', fillColor: '#3b82f6', fillOpacity: 0.2 }).addTo(map);
+        setTimeout(() => {
+            if (!map) {
+                map = L.map('map').setView([sekolahLat, sekolahLng], 17);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(map);
+            } else {
+                map.setView([sekolahLat, sekolahLng], 17);
+                map.invalidateSize();
+            }
+            if (sekolahCircle) map.removeLayer(sekolahCircle);
+            sekolahCircle = L.circle([sekolahLat, sekolahLng], { radius: radiusMaksimal, color: 'blue', fillColor: '#3b82f6', fillOpacity: 0.2 }).addTo(map);
 
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(position => {
-                userLat = position.coords.latitude; userLng = position.coords.longitude;
-                const jarak = hitungJarak(userLat, userLng, sekolahLat, sekolahLng);
-                document.getElementById('jarak-text').innerText = `${Math.round(jarak)} Meter`;
-                if (userMarker) map.removeLayer(userMarker);
-                userMarker = L.marker([userLat, userLng]).addTo(map).bindPopup("Lokasi Anda").openPopup();
-                map.setView([userLat, userLng], 18);
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(position => {
+                    userLat = position.coords.latitude; userLng = position.coords.longitude;
+                    const jarak = hitungJarak(userLat, userLng, sekolahLat, sekolahLng);
+                    document.getElementById('jarak-text').innerText = `${Math.round(jarak)} Meter`;
+                    if (userMarker) map.removeLayer(userMarker);
+                    userMarker = L.marker([userLat, userLng]).addTo(map).bindPopup("Lokasi Anda").openPopup();
+                    map.setView([userLat, userLng], 18);
 
-                const statusBadge = document.getElementById('gps-status-info');
-                const btnLanjut = document.getElementById('btn-lanjut-absen');
-                if (jarak <= radiusMaksimal) {
-                    statusBadge.color = "success";
-                    statusBadge.innerText = "Radius Valid (Di dalam area sekolah)";
-                    btnLanjut.disabled = false;
-                } else {
-                    statusBadge.color = "danger";
-                    statusBadge.innerText = `Diluar Radius (${Math.round(jarak)}m > ${radiusMaksimal}m)`;
-                    btnLanjut.disabled = true;
-                }
-            }, () => { alert("GPS tidak aktif atau izin lokasi ditolak."); }, { enableHighAccuracy: true });
-        }
+                    const statusBadge = document.getElementById('gps-status-info');
+                    const btnLanjut = document.getElementById('btn-lanjut-absen');
+                    if (jarak <= radiusMaksimal) {
+                        statusBadge.color = "success";
+                        statusBadge.innerText = "Radius Valid (Di dalam area sekolah)";
+                        btnLanjut.disabled = false;
+                    } else {
+                        statusBadge.color = "danger";
+                        statusBadge.innerText = `Diluar Radius (${Math.round(jarak)}m > ${radiusMaksimal}m)`;
+                        btnLanjut.disabled = true;
+                    }
+                }, () => { alert("GPS tidak aktif atau izin lokasi ditolak."); }, { enableHighAccuracy: true });
+            }
+        }, 300);
     }
 
     function hitungJarak(lat1, lon1, lat2, lon2) {
@@ -533,7 +542,9 @@
     }
 
     function keHalamanEnroll() {
-        bootstrap.Modal.getInstance(document.getElementById('modalEnrollWarning')).hide();
+        const modalEl = document.getElementById('modalEnrollWarning');
+        const modal = bootstrap.Modal.getInstance(modalEl);
+        if(modal) modal.hide();
         switchSubPage('enroll');
     }
 
@@ -544,11 +555,11 @@
         const btnAbsen = document.getElementById('btn-eksekusi-absen');
 
         faceDetectionInterval = setInterval(async () => {
-            if (video.paused || video.ended) return;
+            if (!video || video.paused || video.ended) return;
             const detections = await faceapi.detectSingleFace(video, new faceapi.TinyFaceDetectorOptions());
             
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
+            canvas.width = video.videoWidth || 300;
+            canvas.height = video.videoHeight || 225;
             const ctx = canvas.getContext('2d');
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
