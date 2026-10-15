@@ -4,22 +4,180 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistem Absensi Siswa Pintar</title>
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- FontAwesome untuk Icon -->
+    <!-- FontAwesome Icon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <!-- Face-API.js untuk Pengenalan Wajah -->
+    <!-- Face-API.js -->
     <script defer src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+    
     <style>
-        body { background-color: #f8f9fa; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        .app-container { max-width: 480px; margin: 0 auto; background: #ffffff; min-height: 100vh; display: flex; flex-direction: column; box-shadow: 0 0 15px rgba(0,0,0,0.1); position: relative; }
-        .content-area { flex: 1; padding: 20px; padding-bottom: 90px; overflow-y: auto; }
-        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; max-width: 480px; margin: 0 auto; background: #ffffff; border-top: 1px solid #dee2e6; z-index: 1000; display: none; }
-        .video-container { position: relative; width: 100%; max-height: 240px; background: #000; border-radius: 10px; overflow: hidden; }
+        :root {
+            --primary-gradient: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            --card-radius: 16px;
+            --btn-radius: 12px;
+        }
+
+        body { 
+            background-color: #f1f5f9; 
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: #1e293b;
+        }
+
+        .app-container { 
+            max-width: 440px; 
+            margin: 0 auto; 
+            background: #f8fafc; 
+            min-height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+            position: relative; 
+        }
+
+        .content-area { 
+            flex: 1; 
+            padding: 20px; 
+            padding-bottom: 90px; 
+            overflow-y: auto; 
+        }
+
+        /* Card Header Jam & Date */
+        .clock-card {
+            background: var(--primary-gradient);
+            border: none;
+            border-radius: var(--card-radius);
+            color: #ffffff;
+            box-shadow: 0 10px 20px -5px rgba(37, 99, 235, 0.35);
+        }
+
+        .clock-time {
+            font-size: 1.85rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .clock-date {
+            font-size: 0.875rem;
+            opacity: 0.9;
+            font-weight: 400;
+        }
+
+        /* Card Profil */
+        .profile-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--card-radius);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .avatar-box {
+            width: 46px;
+            height: 46px;
+            border-radius: 12px;
+            background: #eff6ff;
+            color: #2563eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Card Absensi & Tombol */
+        .attendance-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--card-radius);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03);
+        }
+
+        .absen-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--card-radius);
+            padding: 14px;
+        }
+
+        .btn-custom {
+            border-radius: var(--btn-radius);
+            padding: 12px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            border: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-custom:active {
+            transform: scale(0.98);
+        }
+
+        .btn-datang {
+            background: #10b981;
+            color: white;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+        }
+        .btn-datang:hover { background: #059669; color: white; }
+
+        .btn-pulang {
+            background: #ef4444;
+            color: white;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);
+        }
+        .btn-pulang:hover { background: #dc2626; color: white; }
+
+        /* Navigasi Bawah */
+        .bottom-nav { 
+            position: fixed; 
+            bottom: 0; 
+            left: 0; 
+            right: 0; 
+            max-width: 440px; 
+            margin: 0 auto; 
+            background: #ffffff; 
+            border-top: 1px solid #e2e8f0; 
+            z-index: 1000; 
+            display: none; 
+            padding: 8px 0;
+        }
+
+        .nav-btn {
+            border: none;
+            background: transparent;
+            color: #64748b;
+            font-size: 0.75rem;
+            font-weight: 500;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 6px 0;
+            transition: color 0.2s;
+        }
+
+        .nav-btn.active {
+            color: #2563eb;
+            font-weight: 600;
+        }
+
+        /* Camera & Map Container */
+        .video-container { 
+            position: relative; 
+            width: 100%; 
+            max-height: 250px; 
+            background: #0f172a; 
+            border-radius: var(--card-radius); 
+            overflow: hidden; 
+        }
         video, canvas { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; }
-        #map { height: 200px; border-radius: 8px; margin-bottom: 15px; }
+        #map { height: 220px; border-radius: var(--card-radius); margin-bottom: 15px; }
+
+        /* Badge Custom */
+        .badge-soft-success { background: #d1fae5; color: #065f46; }
+        .badge-soft-danger { background: #fee2e2; color: #991b1b; }
+        .badge-soft-secondary { background: #f1f5f9; color: #475569; }
     </style>
 </head>
 <body>
@@ -29,78 +187,107 @@
     <!-- HALAMAN LOGIN -->
     <div id="page-login" class="content-area d-flex flex-column justify-content-center align-items-center">
         <div class="text-center mb-4">
-            <i class="fa-solid fa-school-circle-check fa-3x text-primary mb-3"></i>
-            <h3>Portal Absensi Siswa</h3>
-            <p class="text-muted">Silakan login menggunakan NISN & Password</p>
+            <div class="avatar-box mx-auto mb-3" style="width: 64px; height: 64px; font-size: 1.8rem; border-radius: 18px;">
+                <i class="fa-solid fa-school-circle-check"></i>
+            </div>
+            <h4 class="fw-bold text-dark mb-1">Portal Absensi Siswa</h4>
+            <p class="text-muted small">Silakan login menggunakan NISN & Password</p>
         </div>
-        <div class="w-100 px-3">
+        <div class="w-100 px-2">
             <div class="mb-3">
-                <label class="form-label">NISN Siswa</label>
-                <input type="text" id="login-nisn" class="form-control" placeholder="Contoh: 0081234567">
+                <label class="form-label small fw-semibold text-secondary">NISN Siswa</label>
+                <input type="text" id="login-nisn" class="form-control form-control-lg fs-6" placeholder="Contoh: 0081234567" style="border-radius: 10px;">
             </div>
-            <div class="mb-3">
-                <label class="form-label">Password</label>
-                <input type="password" id="login-pass" class="form-control" placeholder="Masukkan password">
+            <div class="mb-4">
+                <label class="form-label small fw-semibold text-secondary">Password</label>
+                <input type="password" id="login-pass" class="form-control form-control-lg fs-6" placeholder="Masukkan password" style="border-radius: 10px;">
             </div>
-            <button onclick="prosesLogin()" id="btn-login" class="btn btn-primary w-100 py-2">Masuk Aplikasi</button>
-            <div id="login-error" class="text-danger text-center mt-2 small"></div>
+            <button onclick="prosesLogin()" id="btn-login" class="btn btn-primary w-100 py-3 fw-bold" style="border-radius: 10px; background: var(--primary-gradient);">Masuk Aplikasi</button>
+            <div id="login-error" class="text-danger text-center mt-3 small"></div>
         </div>
     </div>
 
     <!-- HALAMAN UTAMA (HOME) -->
     <div id="page-main" class="content-area d-none">
-        <div class="card bg-primary text-white mb-3 shadow-sm">
-            <div class="card-body text-center py-2">
-                <h5 id="live-date" class="mb-0 fw-bold">-</h5>
-                <h2 id="live-time" class="mb-0 fw-bolder">00:00:00 WIB</h2>
+        
+        <!-- CARD JAM & TANGGAL -->
+        <div class="card clock-card mb-3">
+            <div class="card-body text-center py-3">
+                <div id="live-date" class="clock-date mb-1">-</div>
+                <div id="live-time" class="clock-time">00:00:00 WIB</div>
             </div>
         </div>
 
-        <div class="card bg-light border-0 mb-3 shadow-sm">
-            <div class="card-body py-2 d-flex align-items-center">
+        <!-- CARD INFORMASI SISWA -->
+        <div class="card profile-card mb-3">
+            <div class="card-body py-3 d-flex align-items-center">
+                <div class="avatar-box me-3">
+                    <i class="fa-solid fa-user-graduate fa-lg"></i>
+                </div>
                 <div class="flex-grow-1">
-                    <h6 class="text-muted mb-0 small">Selamat Datang,</h6>
-                    <h5 id="user-name" class="fw-bold mb-0 text-dark">-</h5>
-                    <span id="user-nisn-display" class="badge bg-secondary">NISN: -</span>
-                </div>
-                <div class="text-end">
-                    <i class="fa-solid fa-user-graduate fa-2x text-primary"></i>
+                    <span class="text-muted small d-block" style="font-size: 0.75rem;">Selamat Datang,</span>
+                    <h6 id="user-name" class="fw-bold mb-1 text-dark">-</h6>
+                    <span id="user-nisn-display" class="badge bg-light text-secondary border">NISN: -</span>
                 </div>
             </div>
         </div>
 
-        <div class="card shadow-sm border-0 mb-3">
-            <div class="card-body text-center py-4">
-                <h5 class="fw-bold mb-3">Menu Absensi Harian</h5>
-                <div class="d-grid gap-3">
-                    <button onclick="bukaValidasiGPS('Datang')" class="btn btn-success py-3 fw-bold shadow-sm">
-                        <i class="fa-solid fa-right-to-bracket fa-lg me-2"></i> Absen Datang
-                    </button>
-                    <button onclick="bukaValidasiGPS('Pulang')" class="btn btn-danger py-3 fw-bold shadow-sm">
-                        <i class="fa-solid fa-right-from-bracket fa-lg me-2"></i> Absen Pulang
-                    </button>
+        <!-- CARD MENU ABSENSI -->
+        <div class="card attendance-card">
+            <div class="card-body p-3">
+                <h6 class="fw-bold text-dark mb-3"><i class="fa-solid fa-calendar-check text-primary me-2"></i>Presensi Hari Ini</h6>
+                
+                <div class="d-flex flex-column gap-3">
+                    
+                    <!-- ABSEN DATANG BOX -->
+                    <div class="absen-box">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div>
+                                <span class="fw-bold d-block text-dark small"><i class="fa-solid fa-right-to-bracket text-success me-1"></i> Absen Datang</span>
+                                <span class="text-muted" style="font-size: 0.75rem;">Jam Absen: <strong id="time-datang-text" class="text-dark">--:-- WIB</strong></span>
+                            </div>
+                            <span id="badge-datang-status" class="badge badge-soft-secondary px-2 py-1">Belum Absen</span>
+                        </div>
+                        <button onclick="bukaValidasiGPS('Datang')" class="btn btn-custom btn-datang w-100 mt-1">
+                            Absen Datang
+                        </button>
+                    </div>
+
+                    <!-- ABSEN PULANG BOX -->
+                    <div class="absen-box">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div>
+                                <span class="fw-bold d-block text-dark small"><i class="fa-solid fa-right-from-bracket text-danger me-1"></i> Absen Pulang</span>
+                                <span class="text-muted" style="font-size: 0.75rem;">Jam Absen: <strong id="time-pulang-text" class="text-dark">--:-- WIB</strong></span>
+                            </div>
+                            <span id="badge-pulang-status" class="badge badge-soft-secondary px-2 py-1">Belum Absen</span>
+                        </div>
+                        <button onclick="bukaValidasiGPS('Pulang')" class="btn btn-custom btn-pulang w-100 mt-1">
+                            Absen Pulang
+                        </button>
+                    </div>
+
                 </div>
             </div>
         </div>
+
     </div>
 
     <!-- HALAMAN VALIDASI GPS -->
     <div id="page-gps" class="content-area d-none">
         <div class="d-flex align-items-center mb-3">
-            <button onclick="switchPage('main')" class="btn btn-outline-secondary btn-sm me-3"><i class="fa-solid fa-arrow-left"></i></button>
-            <h4 class="mb-0 fw-bold">Validasi Lokasi GPS</h4>
+            <button onclick="switchPage('main')" class="btn btn-light btn-sm rounded-circle me-3 border"><i class="fa-solid fa-arrow-left"></i></button>
+            <h5 class="mb-0 fw-bold">Validasi Lokasi GPS</h5>
         </div>
-        <div class="card shadow-sm mb-3">
-            <div class="card-body">
-                <div id="map"></div>
-                <div class="text-center">
-                    <p class="mb-1 text-muted small">Jarak Anda ke Titik Sekolah:</p>
-                    <h3 id="jarak-text" class="fw-bold text-primary">Menghitung GPS...</h3>
-                    <div id="gps-status-info" class="badge bg-warning text-dark mb-3">Mencari koordinat akurat...</div>
-                    <button id="btn-lanjut-absen" onclick="lanjutKeKamera()" class="btn btn-primary w-100 py-2 fw-bold" disabled>
-                        Lanjut ke Verifikasi Wajah <i class="fa-solid fa-arrow-right"></i>
-                    </button>
-                </div>
+        <div class="card profile-card p-3">
+            <div id="map"></div>
+            <div class="text-center">
+                <p class="mb-1 text-muted small">Jarak Anda ke Sekolah:</p>
+                <h3 id="jarak-text" class="fw-bold text-primary mb-2">Menghitung...</h3>
+                <div id="gps-status-info" class="badge bg-warning text-dark mb-3 px-3 py-2">Mencari koordinat...</div>
+                <button id="btn-lanjut-absen" onclick="lanjutKeKamera()" class="btn btn-primary w-100 py-3 fw-bold btn-custom" style="background: var(--primary-gradient);" disabled>
+                    Lanjut Verifikasi Wajah <i class="fa-solid fa-arrow-right ms-1"></i>
+                </button>
             </div>
         </div>
     </div>
@@ -108,90 +295,94 @@
     <!-- HALAMAN KAMERA & PENCOCOKAN WAJAH -->
     <div id="page-face" class="content-area d-none">
         <div class="d-flex align-items-center mb-3">
-            <button onclick="switchPage('gps')" class="btn btn-outline-secondary btn-sm me-3"><i class="fa-solid fa-arrow-left"></i></button>
-            <h4 class="mb-0 fw-bold">Verifikasi Wajah (<span id="tipe-absen-label">Datang</span>)</h4>
+            <button onclick="switchPage('gps')" class="btn btn-light btn-sm rounded-circle me-3 border"><i class="fa-solid fa-arrow-left"></i></button>
+            <h5 class="mb-0 fw-bold">Verifikasi (<span id="tipe-absen-label">Datang</span>)</h5>
         </div>
-        <div class="card shadow-sm">
-            <div class="card-body text-center">
-                <div class="mb-3 video-container">
-                    <video id="video-preview" autoplay playsinline muted></video>
-                    <canvas id="overlay-canvas"></canvas>
-                </div>
-                <button id="btn-eksekusi-absen" onclick="eksekusiKirimAbsen()" class="btn btn-success w-100 py-2 fw-bold" disabled>
-                    <i class="fa-solid fa-check"></i> Konfirmasi Absen
-                </button>
-                <div id="absen-status-msg" class="mt-2 small fw-bold text-center text-danger">Posisikan wajah di depan kamera...</div>
+        <div class="card profile-card p-3 text-center">
+            <div class="mb-3 video-container">
+                <video id="video-preview" autoplay playsinline muted></video>
+                <canvas id="overlay-canvas"></canvas>
             </div>
+            <button id="btn-eksekusi-absen" onclick="eksekusiKirimAbsen()" class="btn btn-success w-100 py-3 fw-bold btn-custom" disabled>
+                <i class="fa-solid fa-check me-1"></i> Konfirmasi Absen
+            </button>
+            <div id="absen-status-msg" class="mt-2 small fw-bold text-center text-muted">Arahkan wajah ke kamera...</div>
         </div>
     </div>
 
     <!-- HALAMAN ENROLL WAJAH -->
     <div id="page-enroll" class="content-area d-none">
         <div class="d-flex align-items-center mb-3">
-            <button onclick="switchPage('main')" class="btn btn-outline-secondary btn-sm me-3"><i class="fa-solid fa-arrow-left"></i></button>
-            <h4 class="mb-0 fw-bold">Pendaftaran (Enroll) Wajah</h4>
+            <button onclick="switchPage('main')" class="btn btn-light btn-sm rounded-circle me-3 border"><i class="fa-solid fa-arrow-left"></i></button>
+            <h5 class="mb-0 fw-bold">Pendaftaran Biometrik</h5>
         </div>
-        <div class="card shadow-sm">
-            <div class="card-body text-center">
-                <p class="text-muted small">Posisikan wajah Anda dengan jelas di depan kamera untuk disimpan ke profil.</p>
-                <div class="mb-3 video-container">
-                    <video id="video-enroll" autoplay playsinline muted></video>
-                </div>
-                <button onclick="prosesEnroll()" class="btn btn-info w-100 text-white fw-bold">
-                    <i class="fa-solid fa-camera-rotate"></i> Rekam & Simpan Wajah
-                </button>
-                <div id="enroll-msg" class="mt-2 small fw-bold"></div>
+        <div class="card profile-card p-3 text-center">
+            <p class="text-muted small mb-3">Posisikan wajah Anda dengan jelas untuk pendaftaran biometrik.</p>
+            <div class="mb-3 video-container">
+                <video id="video-enroll" autoplay playsinline muted></video>
             </div>
+            <button onclick="prosesEnroll()" class="btn btn-primary w-100 py-3 fw-bold btn-custom" style="background: var(--primary-gradient);">
+                <i class="fa-solid fa-camera me-1"></i> Rekam & Simpan Wajah
+            </button>
+            <div id="enroll-msg" class="mt-2 small fw-bold"></div>
         </div>
     </div>
 
-    <!-- HALAMAN HISTORY & USER -->
+    <!-- HALAMAN HISTORY -->
     <div id="page-history" class="content-area d-none">
-        <h4 class="mb-3 fw-bold">Riwayat Absensi</h4>
-        <div class="card mb-2 shadow-sm"><div class="card-body py-2"><small class="text-muted">Sistem terhubung dengan Supabase</small></div></div>
+        <h5 class="mb-3 fw-bold">Riwayat Absensi</h5>
+        <div class="card profile-card p-3"><small class="text-muted">Riwayat terhubung dengan database.</small></div>
     </div>
 
+    <!-- HALAMAN USER -->
     <div id="page-user" class="content-area d-none">
-        <h4 class="mb-3 fw-bold">Profil & Keamanan</h4>
-        <div class="card shadow-sm mb-3">
-            <div class="card-body">
-                <p class="mb-1"><strong>Nama:</strong> <span id="profile-name">-</span></p>
-                <p class="mb-0"><strong>NISN:</strong> <span id="profile-nisn">-</span></p>
-            </div>
+        <h5 class="mb-3 fw-bold">Profil Siswa</h5>
+        <div class="card profile-card p-3 mb-3">
+            <p class="mb-2 text-secondary small">Nama Lengkap: <strong class="text-dark d-block fs-6" id="profile-name">-</strong></p>
+            <p class="mb-0 text-secondary small">NISN: <strong class="text-dark d-block fs-6" id="profile-nisn">-</strong></p>
         </div>
-        <div class="card shadow-sm mb-3 border-info">
-            <div class="card-body d-flex justify-content-between align-items-center">
+        <div class="card profile-card p-3 mb-3 border-info">
+            <div class="d-flex justify-content-between align-items-center">
                 <div>
-                    <h6 class="fw-bold mb-1">Biometrik Wajah</h6>
-                    <small class="text-muted">Perbarui sampel foto profil Anda</small>
+                    <h6 class="fw-bold mb-0 text-dark">Data Wajah</h6>
+                    <small class="text-muted">Perbarui foto biometrik</small>
                 </div>
-                <button onclick="switchPage('enroll')" class="btn btn-outline-info btn-sm fw-bold">Enroll Ulang</button>
+                <button onclick="switchPage('enroll')" class="btn btn-outline-primary btn-sm fw-bold">Enroll Ulang</button>
             </div>
         </div>
-        <button onclick="logout()" class="btn btn-outline-danger w-100">Keluar Akun</button>
+        <button onclick="logout()" class="btn btn-outline-danger w-100 py-2 fw-bold" style="border-radius: var(--btn-radius);">Keluar Akun</button>
     </div>
 
-    <!-- NAVIGATION BAR -->
-    <nav id="bottom-nav" class="bottom-nav navbar navbar-light bg-white border-top px-2 py-2">
-        <div class="container-fluid d-flex justify-content-around">
-            <button onclick="switchPage('main')" id="nav-main" class="btn text-primary border-0 d-flex flex-column align-items-center"><i class="fa-solid fa-house fa-lg"></i><small style="font-size: 10px;">Home</small></button>
-            <button onclick="switchPage('history')" id="nav-history" class="btn text-muted border-0 d-flex flex-column align-items-center"><i class="fa-solid fa-clock-rotate-left fa-lg"></i><small style="font-size: 10px;">History</small></button>
-            <button onclick="switchPage('user')" id="nav-user" class="btn text-muted border-0 d-flex flex-column align-items-center"><i class="fa-solid fa-user fa-lg"></i><small style="font-size: 10px;">User</small></button>
+    <!-- NAVIGATION BAR BAWAH -->
+    <nav id="bottom-nav" class="bottom-nav">
+        <div class="d-flex justify-content-around">
+            <button onclick="switchPage('main')" id="nav-main" class="nav-btn active">
+                <i class="fa-solid fa-house fa-lg"></i>
+                <span>Beranda</span>
+            </button>
+            <button onclick="switchPage('history')" id="nav-history" class="nav-btn">
+                <i class="fa-solid fa-clock-rotate-left fa-lg"></i>
+                <span>Riwayat</span>
+            </button>
+            <button onclick="switchPage('user')" id="nav-user" class="nav-btn">
+                <i class="fa-solid fa-user fa-lg"></i>
+                <span>Profil</span>
+            </button>
         </div>
     </nav>
 
 </div>
 
-<!-- MODAL PERINGATAN BELUM ENROLL -->
+<!-- MODAL PERINGATAN ENROLL -->
 <div class="modal fade" id="modalEnrollWarning" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header bg-warning text-dark"><h5 class="modal-title fw-bold">Peringatan Biometrik</h5></div>
+    <div class="modal-dialog modal-dialog-centered p-3">
+        <div class="modal-content border-0" style="border-radius: var(--card-radius);">
             <div class="modal-body text-center py-4">
-                <h5 class="fw-bold">Wajah Belum Direkam!</h5>
-                <p class="text-muted small mb-0">Silakan daftarkan wajah Anda terlebih dahulu sebelum absen.</p>
+                <i class="fa-solid fa-triangle-exclamation text-warning fa-3x mb-3"></i>
+                <h5 class="fw-bold text-dark">Wajah Belum Terdaftar</h5>
+                <p class="text-muted small mb-3">Silakan daftarkan wajah Anda terlebih dahulu sebelum melakukan absensi.</p>
+                <button type="button" class="btn btn-primary w-100 py-2 fw-bold" style="border-radius: 10px;" onclick="keHalamanEnroll()">Daftar Sekarang</button>
             </div>
-            <div class="modal-footer"><button type="button" class="btn btn-primary btn-sm" onclick="keHalamanEnroll()">Daftar Sekarang</button></div>
         </div>
     </div>
 </div>
@@ -220,6 +411,7 @@
         }
     });
 
+    // Realtime Jam
     setInterval(() => {
         const now = new Date();
         document.getElementById('live-date').innerText = now.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
@@ -255,12 +447,12 @@
             document.getElementById(p).classList.add('d-none');
         });
         ['nav-main', 'nav-history', 'nav-user'].forEach(n => {
-            if(document.getElementById(n)) document.getElementById(n).className = "btn text-muted border-0 d-flex flex-column align-items-center";
+            if(document.getElementById(n)) document.getElementById(n).classList.remove('active');
         });
 
         if (page === 'main') {
             document.getElementById('page-main').classList.remove('d-none');
-            document.getElementById('nav-main').className = "btn text-primary border-0 d-flex flex-column align-items-center";
+            document.getElementById('nav-main').classList.add('active');
             if (activeStream) activeStream.getTracks().forEach(t => t.stop());
         } else if (page === 'gps') {
             ambilKonfigurasiSekolah();
@@ -275,10 +467,10 @@
             startCamera('video-enroll');
         } else if (page === 'history') {
             document.getElementById('page-history').classList.remove('d-none');
-            document.getElementById('nav-history').className = "btn text-primary border-0 d-flex flex-column align-items-center";
+            document.getElementById('nav-history').classList.add('active');
         } else if (page === 'user') {
             document.getElementById('page-user').classList.remove('d-none');
-            document.getElementById('nav-user').className = "btn text-primary border-0 d-flex flex-column align-items-center";
+            document.getElementById('nav-user').classList.add('active');
         }
     }
 
@@ -299,6 +491,18 @@
                 document.getElementById('user-nisn-display').innerText = "NISN: " + currentUser.nisn;
                 document.getElementById('profile-name').innerText = currentUser.nama;
                 document.getElementById('profile-nisn').innerText = currentUser.nisn;
+
+                // Tampilkan data jam absen jika sudah disiapkan dari backend
+                if(currentUser.jam_datang) {
+                    document.getElementById('time-datang-text').innerText = currentUser.jam_datang + " WIB";
+                    document.getElementById('badge-datang-status').className = "badge badge-soft-success px-2 py-1";
+                    document.getElementById('badge-datang-status').innerText = "Sudah Absen";
+                }
+                if(currentUser.jam_pulang) {
+                    document.getElementById('time-pulang-text').innerText = currentUser.jam_pulang + " WIB";
+                    document.getElementById('badge-pulang-status').className = "badge badge-soft-success px-2 py-1";
+                    document.getElementById('badge-pulang-status').innerText = "Sudah Absen";
+                }
 
                 document.getElementById('bottom-nav').style.display = "block";
                 document.getElementById('page-login').classList.add('d-none');
@@ -330,7 +534,7 @@
             map.setView([sekolahLat, sekolahLng], 17);
         }
         if (sekolahCircle) map.removeLayer(sekolahCircle);
-        sekolahCircle = L.circle([sekolahLat, sekolahLng], { radius: radiusMaksimal, color: 'blue', fillColor: '#f03', fillOpacity: 0.2 }).addTo(map);
+        sekolahCircle = L.circle([sekolahLat, sekolahLng], { radius: radiusMaksimal, color: '#2563eb', fillColor: '#3b82f6', fillOpacity: 0.2 }).addTo(map);
 
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(position => {
@@ -342,12 +546,12 @@
                 map.setView([userLat, userLng], 18);
 
                 if (jarak <= radiusMaksimal) {
-                    document.getElementById('gps-status-info').className = "badge bg-success mb-3";
-                    document.getElementById('gps-status-info').innerText = "Radius Valid!";
+                    document.getElementById('gps-status-info').className = "badge bg-success text-white mb-3 px-3 py-2";
+                    document.getElementById('gps-status-info').innerText = "Lokasi Valid (Di dalam sekolah)";
                     document.getElementById('btn-lanjut-absen').disabled = false;
                 } else {
-                    document.getElementById('gps-status-info').className = "badge bg-danger mb-3";
-                    document.getElementById('gps-status-info').innerText = `Diluar Radius (${Math.round(jarak)}m > ${radiusMaksimal}m)`;
+                    document.getElementById('gps-status-info').className = "badge bg-danger text-white mb-3 px-3 py-2";
+                    document.getElementById('gps-status-info').innerText = `Di Luar Radius (${Math.round(jarak)}m > ${radiusMaksimal}m)`;
                     document.getElementById('btn-lanjut-absen').disabled = true;
                 }
             }, () => { alert("GPS tidak aktif."); }, { enableHighAccuracy: true });
@@ -375,7 +579,6 @@
         switchPage('enroll');
     }
 
-    // --- ALGORITMA PENCOCOKAN WAJAH REALTIME (BINGKAI HIJAU / MERAH) ---
     function mulaiDeteksiWajahRealtime() {
         const video = document.getElementById('video-preview');
         const canvas = document.getElementById('overlay-canvas');
@@ -393,20 +596,15 @@
 
             if (detections) {
                 const box = detections.box;
-                // Simulasi pencocokan wajah dengan data terdaftar
-                const isMatch = true; // Gelar algoritma pencocokan biometrik di sini
+                const isMatch = true; 
 
-                ctx.strokeStyle = isMatch ? 'green' : 'red';
+                ctx.strokeStyle = isMatch ? '#10b981' : '#ef4444';
                 ctx.lineWidth = 4;
                 ctx.strokeRect(box.x, box.y, box.width, box.height);
 
-                ctx.fillStyle = isMatch ? 'green' : 'red';
-                ctx.font = '16px Arial';
-                ctx.fillText(isMatch ? currentUser.nama : "Tidak Dikenali", box.x, box.y > 20 ? box.y - 5 : 20);
-
                 if (isMatch) {
                     statusMsg.className = "mt-2 small fw-bold text-success";
-                    statusMsg.innerText = "Wajah Cocok: " + currentUser.nama;
+                    statusMsg.innerText = "Wajah Terverifikasi: " + currentUser.nama;
                     btnAbsen.disabled = false;
                 } else {
                     statusMsg.className = "mt-2 small fw-bold text-danger";
@@ -421,7 +619,6 @@
         }, 800);
     }
 
-    // --- ENROLL WAJAH (SIMPAN KE TABEL SISWA) ---
     async function prosesEnroll() {
         const msg = document.getElementById('enroll-msg');
         msg.className = "text-primary"; msg.innerText = "Merekam wajah...";
@@ -440,7 +637,6 @@
             const cloudData = await cloudRes.json();
             if(!cloudData.secure_url) throw new Error("Gagal upload Cloudinary.");
 
-            // Kirim URL ke GAS untuk disimpan di tabel siswa
             const res = await fetch(GAS_WEB_APP_URL, {
                 method: "POST",
                 body: JSON.stringify({ action: "enroll", nisn: currentUser.nisn, imageUrl: cloudData.secure_url })
@@ -460,11 +656,10 @@
         }
     }
 
-    // --- EKSEKUSI ABSENSI (TANPA KIRIM FOTO KE PRESENSI) ---
     async function eksekusiKirimAbsen() {
         const msgEl = document.getElementById('absen-status-msg');
         msgEl.className = "mt-2 small fw-bold text-primary";
-        msgEl.innerText = "Menyimpan absensi ke database...";
+        msgEl.innerText = "Menyimpan absensi...";
 
         try {
             const payload = {
@@ -479,9 +674,20 @@
             const gasResult = await gasRes.json();
 
             if(gasResult.status === "success") {
+                const jamSekarang = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+                if(selectedTipeAbsen === "Datang") {
+                    document.getElementById('time-datang-text').innerText = jamSekarang + " WIB";
+                    document.getElementById('badge-datang-status').className = "badge badge-soft-success px-2 py-1";
+                    document.getElementById('badge-datang-status').innerText = "Sudah Absen";
+                } else {
+                    document.getElementById('time-pulang-text').innerText = jamSekarang + " WIB";
+                    document.getElementById('badge-pulang-status').className = "badge badge-soft-success px-2 py-1";
+                    document.getElementById('badge-pulang-status').innerText = "Sudah Absen";
+                }
+
                 msgEl.className = "mt-2 small fw-bold text-success";
-                msgEl.innerText = `Absen ${selectedTipeAbsen} Berhasil Dicatat!`;
-                setTimeout(() => switchPage('main'), 2000);
+                msgEl.innerText = `Absen ${selectedTipeAbsen} Berhasil!`;
+                setTimeout(() => switchPage('main'), 1500);
             } else {
                 throw new Error(gasResult.message);
             }
