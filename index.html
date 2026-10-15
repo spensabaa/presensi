@@ -88,7 +88,7 @@
 <div class="app-container">
 
     <!-- ================= HALAMAN LOGIN ================= -->
-    <div id="page-login" class="main-content is-flex is-flex-direction-column is-justify-content-center is-align-content-center">
+    <div id="page-login" class="main-content is-flex is-flex-direction-column is-justify-content-center">
         <div class="has-text-centered mb-5">
             <span class="icon is-large has-text-link mb-3">
                 <i class="fa-solid fa-school-circle-check fa-3x"></i>
@@ -97,7 +97,7 @@
             <p class="subtitle is-6 has-text-grey">Silakan login menggunakan NISN & Password</p>
         </div>
         
-        <div class="box shadow-sm p-4">
+        <div class="box shadow-sm p-4" style="border-radius: 16px;">
             <div class="field">
                 <label class="label is-small">NISN Siswa</label>
                 <div class="control has-icons-left">
@@ -123,13 +123,13 @@
     <div id="page-main" class="main-content is-hidden">
         
         <!-- Box Jam & Tanggal -->
-        <div class="box notification is-link has-text-centered py-4 mb-4" style="border-radius: 14px;">
+        <div class="box notification is-link has-text-centered py-4 mb-4" style="border-radius: 16px; background: linear-gradient(135deg, #3273dc 0%, #20bc56 100%);">
             <div id="live-date" class="is-size-7 mb-1" style="opacity: 0.9;">-</div>
             <h2 id="live-time" class="title is-4 has-text-white has-text-weight-bold mb-0">00:00:00 WIB</h2>
         </div>
 
         <!-- Box Profil Singkat -->
-        <div class="box p-3 mb-4" style="border-radius: 14px;">
+        <div class="box p-3 mb-4" style="border-radius: 16px;">
             <div class="is-flex is-align-items-center">
                 <div class="is-flex-grow-1">
                     <span class="is-size-7 has-text-grey">Selamat Datang,</span>
@@ -143,32 +143,38 @@
         </div>
 
         <!-- Menu Absensi Harian -->
-        <div class="box p-4" style="border-radius: 14px;">
-            <h6 class="title is-6 has-text-weight-bold mb-3"><i class="fa-solid fa-calendar-check mr-2 text-link"></i>Presensi Harian</h6>
+        <div class="box p-4" style="border-radius: 16px;">
+            <h6 class="title is-6 has-text-weight-bold mb-4"><i class="fa-solid fa-calendar-check mr-2 text-link"></i>Presensi Harian</h6>
             
             <!-- Absen Datang -->
-            <div class="box has-background-light p-3 mb-3 shadowless border">
+            <div class="box has-background-light p-3 mb-4 shadowless border" style="border-radius: 12px;">
                 <div class="is-flex is-justify-content-between is-align-items-center mb-2">
-                    <div>
-                        <span class="has-text-success has-text-weight-bold is-size-7"><i class="fa-solid fa-right-to-bracket mr-1"></i> Absen Datang</span>
-                        <div class="is-size-7 has-text-grey">Jam: <strong id="time-datang-text" class="has-text-dark">--:-- WIB</strong></div>
-                    </div>
-                    <span id="badge-datang-status" class="tag is-light">Belum Absen</span>
+                    <span class="has-text-success has-text-weight-bold is-size-7"><i class="fa-solid fa-right-to-bracket mr-1"></i> Absen Datang</span>
+                    <span id="badge-datang-status" class="tag is-light is-small">Belum Absen</span>
                 </div>
+                <!-- Kotak Jadwal Berdiri Sendiri -->
+                <div class="notification is-white p-2 mb-3 border has-text-centered" style="border-radius: 8px;">
+                    <div class="is-size-7 has-text-grey">Jadwal Masuk Hari Ini:</div>
+                    <div id="jadwal-datang-text" class="has-text-weight-bold is-size-6 has-text-dark">-</div>
+                </div>
+                <div class="is-size-7 has-text-grey mb-2">Waktu Absen: <strong id="time-datang-text" class="has-text-dark">--:-- WIB</strong></div>
                 <button onclick="bukaValidasiGPS('Datang')" class="button is-success is-fullwidth has-text-weight-bold is-small py-3">
                     Absen Datang
                 </button>
             </div>
 
             <!-- Absen Pulang -->
-            <div class="box has-background-light p-3 shadowless border">
+            <div class="box has-background-light p-3 shadowless border" style="border-radius: 12px;">
                 <div class="is-flex is-justify-content-between is-align-items-center mb-2">
-                    <div>
-                        <span class="has-text-danger has-text-weight-bold is-size-7"><i class="fa-solid fa-right-from-bracket mr-1"></i> Absen Pulang</span>
-                        <div class="is-size-7 has-text-grey">Jam: <strong id="time-pulang-text" class="has-text-dark">--:-- WIB</strong></div>
-                    </div>
-                    <span id="badge-pulang-status" class="tag is-light">Belum Absen</span>
+                    <span class="has-text-danger has-text-weight-bold is-size-7"><i class="fa-solid fa-right-from-bracket mr-1"></i> Absen Pulang</span>
+                    <span id="badge-pulang-status" class="tag is-light is-small">Belum Absen</span>
                 </div>
+                <!-- Kotak Jadwal Berdiri Sendiri -->
+                <div class="notification is-white p-2 mb-3 border has-text-centered" style="border-radius: 8px;">
+                    <div class="is-size-7 has-text-grey">Jadwal Pulang Hari Ini:</div>
+                    <div id="jadwal-pulang-text" class="has-text-weight-bold is-size-6 has-text-dark">-</div>
+                </div>
+                <div class="is-size-7 has-text-grey mb-2">Waktu Absen: <strong id="time-pulang-text" class="has-text-dark">--:-- WIB</strong></div>
                 <button onclick="bukaValidasiGPS('Pulang')" class="button is-danger is-fullwidth has-text-weight-bold is-small py-3">
                     Absen Pulang
                 </button>
@@ -179,7 +185,7 @@
     <!-- ================= HALAMAN HISTORY ================= -->
     <div id="page-history" class="main-content is-hidden">
         <h4 class="title is-5 has-text-weight-bold mb-4">Riwayat Absensi</h4>
-        <div class="box has-text-centered py-6">
+        <div class="box has-text-centered py-6" style="border-radius: 16px;">
             <span class="icon is-large has-text-grey-light mb-2"><i class="fa-solid fa-clock-rotate-left fa-2x"></i></span>
             <p class="has-text-grey is-size-7">Log riwayat presensi tersinkronisasi otomatis dengan database.</p>
         </div>
@@ -188,14 +194,14 @@
     <!-- ================= HALAMAN USER (PROFIL) ================= -->
     <div id="page-user" class="main-content is-hidden">
         <h4 class="title is-5 has-text-weight-bold mb-4">Profil & Keamanan</h4>
-        <div class="box p-4 mb-3" style="border-radius: 12px;">
+        <div class="box p-4 mb-3" style="border-radius: 16px;">
             <p class="is-size-7 has-text-grey mb-1">Nama Siswa:</p>
             <h5 id="profile-name" class="title is-6 has-text-weight-bold mb-3">-</h5>
             <p class="is-size-7 has-text-grey mb-1">NISN:</p>
             <h6 id="profile-nisn" class="subtitle is-6 has-text-weight-bold mb-0">-</h6>
         </div>
 
-        <div class="box p-4 mb-4 is-flex is-align-items-center is-justify-content-between" style="border-radius: 12px;">
+        <div class="box p-4 mb-4 is-flex is-align-items-center is-justify-content-between" style="border-radius: 16px;">
             <div>
                 <h6 class="title is-6 has-text-weight-bold mb-1">Biometrik Wajah</h6>
                 <p class="is-size-7 has-text-grey">Perbarui sampel foto profil Anda</p>
@@ -230,7 +236,7 @@
             <button onclick="switchPage('main')" class="button is-light is-rounded mr-3"><i class="fa-solid fa-arrow-left"></i></button>
             <h4 class="title is-5 has-text-weight-bold mb-0">Validasi Lokasi GPS</h4>
         </div>
-        <div class="box p-4" style="border-radius: 14px;">
+        <div class="box p-4" style="border-radius: 16px;">
             <div id="map"></div>
             <div class="has-text-centered">
                 <p class="is-size-7 has-text-grey mb-1">Jarak Anda ke Titik Sekolah:</p>
@@ -249,7 +255,7 @@
             <button onclick="switchPage('gps')" class="button is-light is-rounded mr-3"><i class="fa-solid fa-arrow-left"></i></button>
             <h4 class="title is-5 has-text-weight-bold mb-0">Verifikasi (<span id="tipe-absen-label">Datang</span>)</h4>
         </div>
-        <div class="box p-4 has-text-centered" style="border-radius: 14px;">
+        <div class="box p-4 has-text-centered" style="border-radius: 16px;">
             <div class="mb-4 video-container">
                 <video id="video-preview" autoplay playsinline muted></video>
                 <canvas id="overlay-canvas"></canvas>
@@ -267,7 +273,7 @@
             <button onclick="switchPage('user')" class="button is-light is-rounded mr-3"><i class="fa-solid fa-arrow-left"></i></button>
             <h4 class="title is-5 has-text-weight-bold mb-0">Pendaftaran Wajah</h4>
         </div>
-        <div class="box p-4 has-text-centered" style="border-radius: 14px;">
+        <div class="box p-4 has-text-centered" style="border-radius: 16px;">
             <p class="is-size-7 has-text-grey mb-3">Posisikan wajah Anda dengan jelas di depan kamera untuk disimpan ke profil.</p>
             <div class="mb-4 video-container">
                 <video id="video-enroll" autoplay playsinline muted></video>
@@ -285,7 +291,7 @@
 <div class="modal" id="modalEnrollWarning">
     <div class="modal-background" onclick="tutupModalEnroll()"></div>
     <div class="modal-content p-4">
-        <div class="box has-text-centered p-5">
+        <div class="box has-text-centered p-5" style="border-radius: 16px;">
             <span class="icon is-large has-text-warning mb-3"><i class="fa-solid fa-triangle-exclamation fa-3x"></i></span>
             <h5 class="title is-5 has-text-weight-bold">Wajah Belum Direkam!</h5>
             <p class="is-size-7 has-text-grey mb-4">Silakan daftarkan wajah Anda terlebih dahulu sebelum absen.</p>
@@ -313,7 +319,39 @@
         try {
             await faceapi.nets.tinyFaceDetector.loadFromUri('https://justadudewhohacks.github.io/face-api.js/models');
         } catch (e) {}
+        muatJadwalHarian();
     });
+
+    // Fungsi untuk menetapkan jadwal berdasarkan hari secara otomatis
+    function muatJadwalHarian() {
+        const now = new Date();
+        const hariIndex = now.getDay(); // 0 = Minggu, 1 = Senin, dst.
+        
+        let jadwalDatang = "07:00 WIB";
+        let jadwalPulang = "13:00 WIB";
+
+        if (hariIndex === 1) { // Senin
+            jadwalDatang = "06:30 WIB";
+            jadwalPulang = "13:15 WIB";
+        } else if (hariIndex >= 2 && hariIndex <= 4) { // Selasa - Kamis
+            jadwalDatang = "07:00 WIB";
+            jadwalPulang = "13:00 WIB";
+        } else if (hariIndex === 5) { // Jumat
+            jadwalDatang = "07:00 WIB";
+            jadwalPulang = "10:30 WIB";
+        } else if (hariIndex === 6) { // Sabtu
+            jadwalDatang = "07:00 WIB";
+            jadwalPulang = "11:30 WIB";
+        } else { // Minggu (Libur)
+            jadwalDatang = "Libur";
+            jadwalPulang = "Libur";
+        }
+
+        const elDatang = document.getElementById('jadwal-datang-text');
+        const elPulang = document.getElementById('jadwal-pulang-text');
+        if(elDatang) elDatang.innerText = jadwalDatang;
+        if(elPulang) elPulang.innerText = jadwalPulang;
+    }
 
     setInterval(() => {
         const now = new Date();
@@ -354,12 +392,10 @@
             activeStream.getTracks().forEach(t => t.stop());
         }
 
-        // Sembunyikan semua halaman utama & sub-halaman
         ['page-login', 'page-main', 'page-history', 'page-user', 'page-gps', 'page-face', 'page-enroll'].forEach(p => {
             document.getElementById(p).classList.add('is-hidden');
         });
 
-        // Reset navigasi bawah
         ['main', 'history', 'user'].forEach(n => {
             const btn = document.getElementById(`nav-${n}`);
             if(btn) {
@@ -403,12 +439,12 @@
 
                 if(currentUser.jam_datang) {
                     document.getElementById('time-datang-text').innerText = currentUser.jam_datang + " WIB";
-                    document.getElementById('badge-datang-status').className = "tag is-success";
+                    document.getElementById('badge-datang-status').className = "tag is-success is-small";
                     document.getElementById('badge-datang-status').innerText = "Sudah Absen";
                 }
                 if(currentUser.jam_pulang) {
                     document.getElementById('time-pulang-text').innerText = currentUser.jam_pulang + " WIB";
-                    document.getElementById('badge-pulang-status').className = "tag is-success";
+                    document.getElementById('badge-pulang-status').className = "tag is-success is-small";
                     document.getElementById('badge-pulang-status').innerText = "Sudah Absen";
                 }
 
@@ -588,11 +624,11 @@
                 const jamSekarang = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
                 if(selectedTipeAbsen === "Datang") {
                     document.getElementById('time-datang-text').innerText = jamSekarang + " WIB";
-                    document.getElementById('badge-datang-status').className = "tag is-success";
+                    document.getElementById('badge-datang-status').className = "tag is-success is-small";
                     document.getElementById('badge-datang-status').innerText = "Sudah Absen";
                 } else {
                     document.getElementById('time-pulang-text').innerText = jamSekarang + " WIB";
-                    document.getElementById('badge-pulang-status').className = "tag is-success";
+                    document.getElementById('badge-pulang-status').className = "tag is-success is-small";
                     document.getElementById('badge-pulang-status').innerText = "Sudah Absen";
                 }
 
