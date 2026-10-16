@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistem Absensi Siswa Pintar</title>
     
     <!-- Google Fonts Inter -->
@@ -20,36 +20,34 @@
         body {
             font-family: 'Inter', sans-serif;
             background-color: #0f172a;
-            overflow: hidden;
-            height: 100vh;
             margin: 0;
             display: flex;
             justify-content: center;
             align-items: center;
+            min-height: 100vh;
         }
         .app-container {
             max-width: 480px;
             width: 100%;
-            height: 100vh;
+            min-height: 100vh;
             background: #f8fafc;
             position: relative;
             box-shadow: 0 0 25px rgba(0,0,0,0.3);
             display: flex;
             flex-direction: column;
-            overflow: hidden;
+            overflow-y: auto; /* Mengizinkan scroll aman jika layar sangat kecil */
         }
         .main-content {
             flex: 1;
-            padding: 16px;
+            padding: 14px;
+            padding-bottom: 75px; /* Ruang untuk bottom nav */
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            overflow: hidden;
         }
         .video-container {
             position: relative;
             width: 100%;
-            height: 220px;
+            height: 200px;
             background: #000;
             border-radius: 12px;
             overflow: hidden;
@@ -64,8 +62,8 @@
         }
         #map {
             width: 100%;
-            height: 240px; /* Diperbesar agar lebih proporsional */
-            border-radius: 12px;
+            height: 180px; /* Disesuaikan agar tombol bawah tidak terpotong */
+            border-radius: 10px;
             z-index: 10;
         }
         .sub-page {
@@ -78,8 +76,8 @@
             z-index: 50;
             display: flex;
             flex-direction: column;
-            padding: 16px;
-            overflow: hidden;
+            padding: 14px;
+            overflow-y: auto;
         }
         .login-bg {
             background: linear-gradient(135deg, rgba(37, 99, 235, 0.9), rgba(16, 185, 129, 0.9)), url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=1000&auto=format&fit=crop');
@@ -87,10 +85,12 @@
             background-position: center;
         }
         .bottom-nav {
-            position: absolute;
+            position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
+            max-width: 480px;
+            margin: 0 auto;
             background: white;
             border-top: 1px solid #dee2e6;
             z-index: 40;
@@ -159,7 +159,7 @@
             </div>
         </div>
 
-        <div class="card p-3 mb-5 border shadow-sm rounded-3 flex-grow-1 d-flex flex-column justify-content-between">
+        <div class="card p-3 mb-3 border shadow-sm rounded-3 flex-grow-1">
             <h6 class="fw-bold text-dark mb-2 small"><i class="fa-solid fa-calendar-check text-primary me-2"></i>Presensi Harian</h6>
             
             <div class="row g-2">
@@ -211,7 +211,6 @@
             <span class="text-muted mb-2"><i class="fa-solid fa-clock-rotate-left fa-2x"></i></span>
             <p class="text-muted small mb-0 px-3">Log riwayat presensi tersinkronisasi otomatis dengan database sistem.</p>
         </div>
-        <div></div>
     </div>
 
     <!-- ================= HALAMAN USER (PROFIL) ================= -->
@@ -233,7 +232,6 @@
         </div>
 
         <button onclick="logout()" class="btn btn-outline-danger btn-sm w-100 fw-bold">Keluar Akun</button>
-        <div></div>
     </div>
 
     <!-- ================= BOTTOM NAVIGATION BAR ================= -->
@@ -254,7 +252,7 @@
 
     <!-- ================= SUB-HALAMAN (GPS, KAMERA, ENROLL) ================= -->
 
-    <!-- HALAMAN GPS (DIPERCANTIK & PROFESIONAL) -->
+    <!-- HALAMAN GPS -->
     <div id="page-gps" class="sub-page d-none">
         <div class="d-flex align-items-center mb-2">
             <button onclick="switchPage('main')" class="btn btn-light btn-sm rounded-circle me-3 shadow-sm" style="width: 32px; height: 32px;"><i class="fa-solid fa-arrow-left"></i></button>
@@ -264,14 +262,14 @@
         <div class="card p-3 border shadow-sm rounded-4 flex-grow-1 d-flex flex-column justify-content-between bg-white">
             <div id="map"></div>
             
-            <div class="text-center px-2 py-1">
+            <div class="text-center px-1 py-1">
                 <span class="text-uppercase text-muted fw-semibold" style="font-size: 9px; letter-spacing: 0.5px;">Jarak Anda ke Titik Sekolah</span>
-                <div id="jarak-text" class="h4 fw-bold text-primary mb-1">Menghitung GPS...</div>
-                <div id="gps-status-info" class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle px-3 py-1.5 rounded-pill mb-3 fw-semibold" style="font-size: 11px;">
+                <div id="jarak-text" class="h5 fw-bold text-primary mb-1">Menghitung GPS...</div>
+                <div id="gps-status-info" class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle px-3 py-1.5 rounded-pill mb-2 fw-semibold" style="font-size: 10px;">
                     <i class="fa-solid fa-circle-notch fa-spin me-1"></i> Mencari koordinat akurat...
                 </div>
                 
-                <button id="btn-lanjut-absen" onclick="lanjutKeKamera()" class="btn btn-primary btn-sm w-100 fw-bold py-2.5 shadow-sm rounded-3" disabled>
+                <button id="btn-lanjut-absen" onclick="lanjutKeKamera()" class="btn btn-primary btn-sm w-100 fw-bold py-2 shadow-sm rounded-3" disabled>
                     Lanjut ke Verifikasi Wajah <i class="fa-solid fa-arrow-right ms-1"></i>
                 </button>
             </div>
@@ -532,11 +530,11 @@
                     const statusBadge = document.getElementById('gps-status-info');
                     const btnLanjut = document.getElementById('btn-lanjut-absen');
                     if (jarak <= radiusMaksimal) {
-                        statusBadge.className = "badge bg-success-subtle text-success-emphasis border border-success-subtle px-3 py-1.5 rounded-pill mb-3 fw-semibold";
+                        statusBadge.className = "badge bg-success-subtle text-success-emphasis border border-success-subtle px-3 py-1.5 rounded-pill mb-2 fw-semibold";
                         statusBadge.innerHTML = `<i class="fa-solid fa-circle-check me-1"></i> Radius Valid (${Math.round(jarak)}m &le; ${radiusMaksimal}m)`;
                         btnLanjut.disabled = false;
                     } else {
-                        statusBadge.className = "badge bg-danger-subtle text-danger-emphasis border border-danger-subtle px-3 py-1.5 rounded-pill mb-3 fw-semibold";
+                        statusBadge.className = "badge bg-danger-subtle text-danger-emphasis border border-danger-subtle px-3 py-1.5 rounded-pill mb-2 fw-semibold";
                         statusBadge.innerHTML = `<i class="fa-solid fa-triangle-exclamation me-1"></i> Diluar Radius (${Math.round(jarak)}m > ${radiusMaksimal}m)`;
                         btnLanjut.disabled = true;
                     }
