@@ -22,7 +22,7 @@
         .main-content { flex: 1; padding: 12px 16px; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; }
         .video-container { position: relative; width: 100%; height: 220px; background: #000; border-radius: 12px; overflow: hidden; }
         video, canvas { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; }
-        #map { height: 180px; border-radius: 12px; margin-bottom: 10px; z-index: 10; }
+        #map { width: 100%; height: 180px; border-radius: 12px; margin-bottom: 10px; z-index: 10; }
         .sub-page { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: #f8fafc; z-index: 50; display: flex; flex-direction: column; padding: 16px; overflow: hidden; }
         
         .login-bg {
@@ -368,7 +368,9 @@
             }
         } else {
             document.getElementById(`page-${page}`).classList.remove('hidden');
-            if (page === 'gps') initMap();
+            if (page === 'gps') {
+                initMap();
+            }
             if (page === 'face') { startCamera('video-preview'); mulaiDeteksiWajahRealtime(); }
             if (page === 'enroll') { startCamera('video-enroll'); }
         }
@@ -434,8 +436,8 @@
                 map = L.map('map').setView([sekolahLat, sekolahLng], 17);
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(map);
             } else {
-                map.setView([sekolahLat, sekolahLng], 17);
                 map.invalidateSize();
+                map.setView([sekolahLat, sekolahLng], 17);
             }
             if (sekolahCircle) map.removeLayer(sekolahCircle);
             sekolahCircle = L.circle([sekolahLat, sekolahLng], { radius: radiusMaksimal, color: 'blue', fillColor: '#3b82f6', fillOpacity: 0.2 }).addTo(map);
