@@ -7,8 +7,8 @@
     
     <!-- Google Fonts Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Bulma CSS Framework -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Leaflet CSS -->
@@ -17,188 +17,260 @@
     <script defer src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
     
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #0f172a; overflow: hidden; height: 100vh; }
-        .app-container { max-width: 480px; height: 100vh; margin: 0 auto; background: #f8fafc; position: relative; box-shadow: 0 0 25px rgba(0,0,0,0.3); display: flex; flex-direction: column; overflow: hidden; }
-        .main-content { flex: 1; padding: 12px 16px; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; }
-        .video-container { position: relative; width: 100%; height: 220px; background: #000; border-radius: 12px; overflow: hidden; }
-        video, canvas { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; }
-        #map { width: 100%; height: 180px; border-radius: 12px; margin-bottom: 10px; z-index: 10; }
-        .sub-page { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: #f8fafc; z-index: 50; display: flex; flex-direction: column; padding: 16px; overflow: hidden; }
-        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+            overflow: hidden;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .app-container {
+            max-width: 480px;
+            width: 100%;
+            height: 100vh;
+            background: #f8fafc;
+            position: relative;
+            box-shadow: 0 0 25px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .main-content {
+            flex: 1;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+        }
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        video, canvas {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        #map {
+            width: 100%;
+            height: 170px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            z-index: 10;
+        }
+        .sub-page {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #f8fafc;
+            z-index: 50;
+            display: flex;
+            flex-direction: column;
+            padding: 16px;
+            overflow: hidden;
+        }
         .login-bg {
             background: linear-gradient(135deg, rgba(37, 99, 235, 0.9), rgba(16, 185, 129, 0.9)), url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=1000&auto=format&fit=crop');
             background-size: cover;
             background-position: center;
         }
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid #dbdbdb;
+            z-index: 40;
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0;
+        }
     </style>
 </head>
-<body class="flex justify-center items-center">
+<body>
 
 <div class="app-container">
 
     <!-- ================= HALAMAN LOGIN ================= -->
-    <div id="page-login" class="main-content login-bg flex flex-col justify-center items-center px-6 text-white">
-        <div class="absolute top-8 left-8 text-white/20 text-4xl animate-pulse"><i class="fa-solid fa-graduation-cap"></i></div>
-        <div class="absolute top-16 right-8 text-white/20 text-3xl"><i class="fa-solid fa-shield-halved"></i></div>
-        <div class="absolute bottom-24 left-10 text-white/20 text-3xl"><i class="fa-solid fa-location-dot"></i></div>
-        <div class="absolute bottom-28 right-10 text-white/20 text-4xl animate-bounce"><i class="fa-solid fa-face-smile"></i></div>
+    <div id="page-login" class="main-content login-bg is-flex is-flex-direction-column is-justify-content-center is-align-items-center has-text-white">
+        <!-- Floating Icons Dekoratif -->
+        <div class="is-absolute" style="top: 2rem; left: 2rem; opacity: 0.2; font-size: 2rem;"><i class="fa-solid fa-graduation-cap"></i></div>
+        <div class="is-absolute" style="top: 4rem; right: 2rem; opacity: 0.2; font-size: 1.8rem;"><i class="fa-solid fa-shield-halved"></i></div>
+        <div class="is-absolute" style="bottom: 6rem; left: 2rem; opacity: 0.2; font-size: 1.8rem;"><i class="fa-solid fa-location-dot"></i></div>
+        <div class="is-absolute" style="bottom: 7rem; right: 2rem; opacity: 0.2; font-size: 2rem;"><i class="fa-solid fa-face-smile"></i></div>
 
-        <div class="text-center mb-5 z-10">
-            <div class="w-16 h-16 bg-white/20 backdrop-blur-md text-white rounded-2xl flex items-center justify-center mx-auto mb-2 shadow-lg border border-white/30">
-                <i class="fa-solid fa-school-circle-check text-3xl"></i>
+        <div class="has-text-centered mb-4" style="z-index: 10;">
+            <div class="b-radius-rounded bg-white p-3 has-text-link mx-auto mb-2 shadow" style="width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border-radius: 16px;">
+                <i class="fa-solid fa-school-circle-check fa-2x"></i>
             </div>
-            <h3 class="text-xl font-bold tracking-wide">Portal Absensi</h3>
-            <p class="text-xs text-white/80 mt-0.5">Sistem Verifikasi Wajah & Lokasi Sekolah</p>
+            <h3 class="title is-5 has-text-white mb-1">Portal Absensi</h3>
+            <p class="is-size-7 has-text-light">Sistem Verifikasi Wajah & Lokasi Sekolah</p>
         </div>
         
-        <div class="w-full bg-white/95 backdrop-blur-md text-slate-800 p-5 rounded-3xl shadow-xl border border-white/40 z-10">
-            <div class="mb-3">
-                <label class="block text-[11px] font-semibold text-slate-600 mb-1">NISN Siswa</label>
-                <div class="relative">
-                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400"><i class="fa-solid fa-id-card"></i></span>
-                    <input type="text" id="login-nisn" class="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Contoh: 0081234567">
+        <div class="box p-4 w-100 shadow-lg" style="border-radius: 20px; background: rgba(255, 255, 255, 0.95); z-index: 10; width: 100%;">
+            <div class="field mb-3">
+                <label class="label is-size-7 has-text-grey-dark mb-1">NISN Siswa</label>
+                <div class="control has-icons-left">
+                    <input class="input is-small" type="text" id="login-nisn" placeholder="Contoh: 0081234567">
+                    <span class="icon is-small is-left"><i class="fa-solid fa-id-card"></i></span>
                 </div>
             </div>
 
-            <div class="mb-4">
-                <label class="block text-[11px] font-semibold text-slate-600 mb-1">Password</label>
-                <div class="relative">
-                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400"><i class="fa-solid fa-lock"></i></span>
-                    <input type="password" id="login-pass" class="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Masukkan password">
+            <div class="field mb-4">
+                <label class="label is-size-7 has-text-grey-dark mb-1">Password</label>
+                <div class="control has-icons-left">
+                    <input class="input is-small" type="password" id="login-pass" placeholder="Masukkan password">
+                    <span class="icon is-small is-left"><i class="fa-solid fa-lock"></i></span>
                 </div>
             </div>
 
-            <button onclick="prosesLogin()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-xl shadow-md transition duration-200 text-xs">Masuk Aplikasi</button>
-            <div id="login-error" class="text-rose-500 text-center mt-2 text-[11px] font-semibold"></div>
+            <button onclick="prosesLogin()" class="button is-link is-fullwidth is-small has-text-weight-bold py-3">Masuk Aplikasi</button>
+            <div id="login-error" class="has-text-danger has-text-centered mt-2 is-size-7 has-text-weight-semibold"></div>
         </div>
     </div>
 
     <!-- ================= HALAMAN UTAMA (HOME) ================= -->
-    <div id="page-main" class="main-content hidden">
-        <div class="bg-gradient-to-r from-blue-600 to-emerald-500 text-white text-center py-2.5 px-3 rounded-xl shadow-sm">
-            <div id="live-date" class="text-[10px] opacity-90 font-medium">-</div>
-            <h2 id="live-time" class="text-xl font-bold tracking-tight">00:00:00 WIB</h2>
+    <div id="page-main" class="main-content is-hidden">
+        <div class="notification is-link has-text-centered py-2 px-3 mb-2" style="border-radius: 12px; background: linear-gradient(135deg, #3273dc 0%, #20bc56 100%);">
+            <div id="live-date" class="is-size-7 mb-0" style="opacity: 0.9;">-</div>
+            <h2 id="live-time" class="title is-5 has-text-white mb-0">00:00:00 WIB</h2>
         </div>
 
-        <div class="bg-white p-3 rounded-xl shadow-sm border border-slate-100 flex items-center my-2">
-            <div class="flex-grow">
-                <span class="text-[10px] text-slate-400 block leading-tight">Selamat Datang,</span>
-                <h5 id="user-name" class="font-bold text-slate-800 text-sm">-</h5>
-                <span class="inline-block bg-slate-100 text-slate-600 text-[10px] font-medium px-2 py-0.5 rounded-full mt-0.5" id="user-nisn-display">NISN: -</span>
+        <div class="box p-3 mb-2 is-flex is-align-items-center shadowless border" style="border-radius: 12px;">
+            <div class="is-flex-grow-1">
+                <span class="is-size-7 has-text-grey">Selamat Datang,</span>
+                <h5 id="user-name" class="title is-6 has-text-weight-bold mb-1">-</h5>
+                <span class="tag is-light is-rounded is-small has-text-weight-semibold" id="user-nisn-display">NISN: -</span>
             </div>
-            <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center">
-                <i class="fa-solid fa-user-graduate text-base"></i>
-            </div>
+            <span class="icon is-large has-text-link">
+                <i class="fa-solid fa-user-graduate fa-lg"></i>
+            </span>
         </div>
 
-        <div class="bg-white p-3 rounded-xl shadow-sm border border-slate-100 flex-grow flex flex-col justify-between mb-12">
-            <h6 class="font-bold text-slate-800 mb-2 flex items-center text-xs">
-                <i class="fa-solid fa-calendar-check text-blue-600 mr-1.5"></i>Presensi Harian
-            </h6>
+        <div class="box p-3 mb-12 is-flex-grow-1 is-flex is-flex-direction-column is-justify-content-space-between" style="border-radius: 12px;">
+            <h6 class="title is-6 has-text-weight-bold mb-2"><i class="fa-solid fa-calendar-check mr-2 text-link"></i>Presensi Harian</h6>
             
-            <div class="grid grid-cols-2 gap-2.5">
-                <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200 flex flex-col justify-between">
-                    <div>
-                        <div class="flex justify-between items-center mb-1">
-                            <span class="text-emerald-600 font-bold text-[11px] flex items-center"><i class="fa-solid fa-right-to-bracket mr-1"></i> Datang</span>
-                            <span id="badge-datang-status" class="bg-slate-200 text-slate-600 text-[9px] font-semibold px-1.5 py-0.5 rounded-full">Belum</span>
+            <div class="columns is-mobile">
+                <!-- Absen Datang -->
+                <div class="column is-6">
+                    <div class="box has-background-light p-2 shadowless border is-flex is-flex-direction-column is-justify-content-space-between" style="border-radius: 10px; height: 100%;">
+                        <div>
+                            <div class="is-flex is-justify-content-between is-align-items-center mb-1">
+                                <span class="has-text-success has-text-weight-bold is-size-7"><i class="fa-solid fa-right-to-bracket"></i> Datang</span>
+                                <span id="badge-datang-status" class="tag is-light is-small" style="font-size: 9px; height: 16px;">Belum</span>
+                            </div>
+                            <div class="notification is-white p-1 mb-2 border has-text-centered" style="border-radius: 6px;">
+                                <div style="font-size: 9px;" class="has-text-grey">Jadwal Masuk</div>
+                                <div id="jadwal-datang-text" class="has-text-weight-bold is-size-7 has-text-dark">-</div>
+                            </div>
+                            <div style="font-size: 10px;" class="has-text-grey mb-2">Absen: <strong id="time-datang-text" class="has-text-dark">--:--</strong></div>
                         </div>
-                        <div class="bg-white p-1.5 rounded-lg border border-slate-200 text-center mb-1.5">
-                            <div class="text-[9px] text-slate-400">Jadwal Masuk</div>
-                            <div id="jadwal-datang-text" class="font-bold text-slate-800 text-xs">-</div>
-                        </div>
-                        <div class="text-[10px] text-slate-500 mb-2">Absen: <strong id="time-datang-text" class="text-slate-800">--:--</strong></div>
+                        <button onclick="bukaValidasiGPS('Datang')" class="button is-success is-fullwidth has-text-weight-bold is-small py-1" style="font-size: 10px;">
+                            Absen Datang
+                        </button>
                     </div>
-                    <button onclick="bukaValidasiGPS('Datang')" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-1.5 rounded-lg shadow-sm text-[11px] transition">
-                        Absen Datang
-                    </button>
                 </div>
 
-                <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200 flex flex-col justify-between">
-                    <div>
-                        <div class="flex justify-between items-center mb-1">
-                            <span class="text-rose-600 font-bold text-[11px] flex items-center"><i class="fa-solid fa-right-from-bracket mr-1"></i> Pulang</span>
-                            <span id="badge-pulang-status" class="bg-slate-200 text-slate-600 text-[9px] font-semibold px-1.5 py-0.5 rounded-full">Belum</span>
+                <!-- Absen Pulang -->
+                <div class="column is-6">
+                    <div class="box has-background-light p-2 shadowless border is-flex is-flex-direction-column is-justify-content-space-between" style="border-radius: 10px; height: 100%;">
+                        <div>
+                            <div class="is-flex is-justify-content-between is-align-items-center mb-1">
+                                <span class="has-text-danger has-text-weight-bold is-size-7"><i class="fa-solid fa-right-from-bracket"></i> Pulang</span>
+                                <span id="badge-pulang-status" class="tag is-light is-small" style="font-size: 9px; height: 16px;">Belum</span>
+                            </div>
+                            <div class="notification is-white p-1 mb-2 border has-text-centered" style="border-radius: 6px;">
+                                <div style="font-size: 9px;" class="has-text-grey">Jadwal Pulang</div>
+                                <div id="jadwal-pulang-text" class="has-text-weight-bold is-size-7 has-text-dark">-</div>
+                            </div>
+                            <div style="font-size: 10px;" class="has-text-grey mb-2">Absen: <strong id="time-pulang-text" class="has-text-dark">--:--</strong></div>
                         </div>
-                        <div class="bg-white p-1.5 rounded-lg border border-slate-200 text-center mb-1.5">
-                            <div class="text-[9px] text-slate-400">Jadwal Pulang</div>
-                            <div id="jadwal-pulang-text" class="font-bold text-slate-800 text-xs">-</div>
-                        </div>
-                        <div class="text-[10px] text-slate-500 mb-2">Absen: <strong id="time-pulang-text" class="text-slate-800">--:--</strong></div>
+                        <button onclick="bukaValidasiGPS('Pulang')" class="button is-danger is-fullwidth has-text-weight-bold is-small py-1" style="font-size: 10px;">
+                            Absen Pulang
+                        </button>
                     </div>
-                    <button onclick="bukaValidasiGPS('Pulang')" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-semibold py-1.5 rounded-lg shadow-sm text-[11px] transition">
-                        Absen Pulang
-                    </button>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- ================= HALAMAN HISTORY ================= -->
-    <div id="page-history" class="main-content hidden">
-        <h4 class="text-base font-bold text-slate-800 mb-3">Riwayat Absensi</h4>
-        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 text-center my-auto">
-            <i class="fa-solid fa-clock-rotate-left text-slate-300 text-2xl mb-2"></i>
-            <p class="text-slate-500 text-xs">Log riwayat presensi tersinkronisasi otomatis dengan database sistem.</p>
+    <div id="page-history" class="main-content is-hidden">
+        <h4 class="title is-5 has-text-weight-bold mb-3">Riwayat Absensi</h4>
+        <div class="box has-text-centered py-6 my-auto shadowless border" style="border-radius: 12px;">
+            <span class="icon is-large has-text-grey-light mb-2"><i class="fa-solid fa-clock-rotate-left fa-2x"></i></span>
+            <p class="has-text-grey is-size-7">Log riwayat presensi tersinkronisasi otomatis dengan database sistem.</p>
         </div>
         <div></div>
     </div>
 
     <!-- ================= HALAMAN USER (PROFIL) ================= -->
-    <div id="page-user" class="main-content hidden">
-        <h4 class="text-base font-bold text-slate-800 mb-3">Profil & Keamanan</h4>
-        <div class="space-y-3">
-            <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100">
-                <p class="text-[10px] text-slate-400 mb-0.5">Nama Siswa:</p>
-                <h5 id="profile-name" class="font-bold text-slate-800 text-sm mb-2">-</h5>
-                <p class="text-[10px] text-slate-400 mb-0.5">NISN:</p>
-                <h6 id="profile-nisn" class="font-bold text-slate-800 text-xs">-</h6>
-            </div>
-
-            <div class="bg-white p-3.5 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between">
-                <div>
-                    <h6 class="font-bold text-slate-800 text-xs mb-0.5">Biometrik Wajah</h6>
-                    <p class="text-[10px] text-slate-400">Perbarui sampel foto profil Anda</p>
-                </div>
-                <button onclick="switchPage('enroll')" class="px-3 py-1.5 border border-blue-600 text-blue-600 hover:bg-blue-50 text-[11px] font-semibold rounded-lg transition">Enroll Ulang</button>
-            </div>
-
-            <button onclick="logout()" class="w-full border border-rose-500 text-rose-500 hover:bg-rose-50 font-semibold py-2.5 rounded-xl text-xs transition">Keluar Akun</button>
+    <div id="page-user" class="main-content is-hidden">
+        <h4 class="title is-5 has-text-weight-bold mb-3">Profil & Keamanan</h4>
+        <div class="box p-3 mb-2 shadowless border" style="border-radius: 12px;">
+            <p class="is-size-7 has-text-grey mb-1">Nama Siswa:</p>
+            <h5 id="profile-name" class="title is-6 has-text-weight-bold mb-2">-</h5>
+            <p class="is-size-7 has-text-grey mb-1">NISN:</p>
+            <h6 id="profile-nisn" class="subtitle is-6 has-text-weight-bold mb-0">-</h6>
         </div>
+
+        <div class="box p-3 mb-3 is-flex is-align-items-center is-justify-content-between shadowless border" style="border-radius: 12px;">
+            <div>
+                <h6 class="title is-6 has-text-weight-bold mb-1">Biometrik Wajah</h6>
+                <p class="is-size-7 has-text-grey">Perbarui sampel foto profil Anda</p>
+            </div>
+            <button onclick="switchPage('enroll')" class="button is-small is-link is-outlined has-text-weight-bold">Enroll Ulang</button>
+        </div>
+
+        <button onclick="logout()" class="button is-danger is-outlined is-fullwidth has-text-weight-bold is-small">Keluar Akun</button>
         <div></div>
     </div>
 
     <!-- ================= BOTTOM NAVIGATION BAR ================= -->
-    <nav id="bottom-nav" class="absolute bottom-0 left-0 right-0 max-w-[480px] mx-auto bg-white border-t border-slate-200 z-40 py-2 px-6 flex justify-around items-center hidden shadow-lg">
-        <button onclick="switchPage('main')" id="nav-main" class="flex flex-col items-center text-blue-600">
-            <i class="fa-solid fa-house text-base mb-0.5"></i>
-            <span class="text-[10px] font-semibold">Beranda</span>
+    <nav id="bottom-nav" class="bottom-nav is-hidden">
+        <button onclick="switchPage('main')" id="nav-main" class="button is-ghost is-flex-direction-column has-text-link border-0 p-1">
+            <i class="fa-solid fa-house fa-sm mb-1"></i>
+            <span style="font-size: 10px;" class="has-text-weight-semibold">Beranda</span>
         </button>
-        <button onclick="switchPage('history')" id="nav-history" class="flex flex-col items-center text-slate-400 hover:text-slate-600">
-            <i class="fa-solid fa-clock-rotate-left text-base mb-0.5"></i>
-            <span class="text-[10px] font-semibold">Riwayat</span>
+        <button onclick="switchPage('history')" id="nav-history" class="button is-ghost is-flex-direction-column has-text-grey border-0 p-1">
+            <i class="fa-solid fa-clock-rotate-left fa-sm mb-1"></i>
+            <span style="font-size: 10px;" class="has-text-weight-semibold">Riwayat</span>
         </button>
-        <button onclick="switchPage('user')" id="nav-user" class="flex flex-col items-center text-slate-400 hover:text-slate-600">
-            <i class="fa-solid fa-user text-base mb-0.5"></i>
-            <span class="text-[10px] font-semibold">Profil</span>
+        <button onclick="switchPage('user')" id="nav-user" class="button is-ghost is-flex-direction-column has-text-grey border-0 p-1">
+            <i class="fa-solid fa-user fa-sm mb-1"></i>
+            <span style="font-size: 10px;" class="has-text-weight-semibold">Profil</span>
         </button>
     </nav>
 
     <!-- ================= SUB-HALAMAN (GPS, KAMERA, ENROLL) ================= -->
 
     <!-- HALAMAN GPS -->
-    <div id="page-gps" class="sub-page hidden">
-        <div class="flex items-center mb-3">
-            <button onclick="switchPage('main')" class="w-8 h-8 bg-slate-100 text-slate-700 rounded-full flex items-center justify-center mr-3"><i class="fa-solid fa-arrow-left text-xs"></i></button>
-            <h4 class="text-base font-bold text-slate-800">Validasi Lokasi GPS</h4>
+    <div id="page-gps" class="sub-page is-hidden">
+        <div class="is-flex is-align-items-center mb-3">
+            <button onclick="switchPage('main')" class="button is-light is-rounded mr-3 is-small"><i class="fa-solid fa-arrow-left"></i></button>
+            <h4 class="title is-5 has-text-weight-bold mb-0">Validasi Lokasi GPS</h4>
         </div>
-        <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex-grow flex flex-col justify-between">
+        <div class="box p-3 shadowless border is-flex-grow-1 is-flex is-flex-direction-column is-justify-content-space-between" style="border-radius: 12px;">
             <div id="map"></div>
-            <div class="text-center">
-                <p class="text-[11px] text-slate-400 mb-0.5">Jarak Anda ke Titik Sekolah:</p>
-                <h3 id="jarak-text" class="text-base font-bold text-blue-600 mb-1">Menghitung GPS...</h3>
-                <span id="gps-status-info" class="inline-block bg-amber-100 text-amber-800 text-[10px] font-semibold px-2.5 py-0.5 rounded-full mb-3">Mencari koordinat akurat...</span>
-                <button id="btn-lanjut-absen" onclick="lanjutKeKamera()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-xl shadow-md text-xs transition disabled:opacity-50" disabled>
+            <div class="has-text-centered">
+                <p class="is-size-7 has-text-grey mb-1">Jarak Anda ke Titik Sekolah:</p>
+                <h3 id="jarak-text" class="title is-5 has-text-link mb-1">Menghitung GPS...</h3>
+                <span id="gps-status-info" class="tag is-warning is-small mb-2">Mencari koordinat akurat...</span>
+                <button id="btn-lanjut-absen" onclick="lanjutKeKamera()" class="button is-link is-fullwidth has-text-weight-bold is-small py-3" disabled>
                     Lanjut ke Verifikasi Wajah <i class="fa-solid fa-arrow-right ml-1"></i>
                 </button>
             </div>
@@ -206,41 +278,41 @@
     </div>
 
     <!-- HALAMAN KAMERA WAJAH -->
-    <div id="page-face" class="sub-page hidden">
-        <div class="flex items-center mb-3">
-            <button onclick="switchPage('gps')" class="w-8 h-8 bg-slate-100 text-slate-700 rounded-full flex items-center justify-center mr-3"><i class="fa-solid fa-arrow-left text-xs"></i></button>
-            <h4 class="text-base font-bold text-slate-800">Verifikasi (<span id="tipe-absen-label">Datang</span>)</h4>
+    <div id="page-face" class="sub-page is-hidden">
+        <div class="is-flex is-align-items-center mb-3">
+            <button onclick="switchPage('gps')" class="button is-light is-rounded mr-3 is-small"><i class="fa-solid fa-arrow-left"></i></button>
+            <h4 class="title is-5 has-text-weight-bold mb-0">Verifikasi (<span id="tipe-absen-label">Datang</span>)</h4>
         </div>
-        <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 text-center flex-grow flex flex-col justify-between">
+        <div class="box p-3 shadowless border has-text-centered is-flex-grow-1 is-flex is-flex-direction-column is-justify-content-space-between" style="border-radius: 12px;">
             <div class="video-container my-auto">
                 <video id="video-preview" autoplay playsinline muted></video>
                 <canvas id="overlay-canvas"></canvas>
             </div>
             <div>
-                <button id="btn-eksekusi-absen" onclick="eksekusiKirimAbsen()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2.5 rounded-xl shadow-md text-xs transition disabled:opacity-50 mb-2" disabled>
+                <button id="btn-eksekusi-absen" onclick="eksekusiKirimAbsen()" class="button is-success is-fullwidth has-text-weight-bold is-small py-3 mb-2" disabled>
                     <i class="fa-solid fa-check mr-1"></i> Konfirmasi Absen
                 </button>
-                <div id="absen-status-msg" class="text-[11px] font-bold text-rose-500">Posisikan wajah di depan kamera...</div>
+                <div id="absen-status-msg" class="is-size-7 has-text-weight-bold has-text-danger">Posisikan wajah di depan kamera...</div>
             </div>
         </div>
     </div>
 
     <!-- HALAMAN ENROLL WAJAH -->
-    <div id="page-enroll" class="sub-page hidden">
-        <div class="flex items-center mb-3">
-            <button onclick="switchPage('user')" class="w-8 h-8 bg-slate-100 text-slate-700 rounded-full flex items-center justify-center mr-3"><i class="fa-solid fa-arrow-left text-xs"></i></button>
-            <h4 class="text-base font-bold text-slate-800">Pendaftaran Wajah</h4>
+    <div id="page-enroll" class="sub-page is-hidden">
+        <div class="is-flex is-align-items-center mb-3">
+            <button onclick="switchPage('user')" class="button is-light is-rounded mr-3 is-small"><i class="fa-solid fa-arrow-left"></i></button>
+            <h4 class="title is-5 has-text-weight-bold mb-0">Pendaftaran Wajah</h4>
         </div>
-        <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 text-center flex-grow flex flex-col justify-between">
-            <p class="text-[11px] text-slate-500">Posisikan wajah Anda dengan jelas di depan kamera untuk disimpan ke profil.</p>
+        <div class="box p-3 shadowless border has-text-centered is-flex-grow-1 is-flex is-flex-direction-column is-justify-content-space-between" style="border-radius: 12px;">
+            <p class="is-size-7 has-text-grey">Posisikan wajah Anda dengan jelas di depan kamera untuk disimpan ke profil.</p>
             <div class="video-container my-auto">
                 <video id="video-enroll" autoplay playsinline muted></video>
             </div>
             <div>
-                <button onclick="prosesEnroll()" class="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-semibold py-2.5 rounded-xl shadow-md text-xs transition mb-2">
+                <button onclick="prosesEnroll()" class="button is-info is-fullwidth has-text-weight-bold is-small py-3 mb-2">
                     <i class="fa-solid fa-camera mr-1"></i> Rekam & Simpan Wajah
                 </button>
-                <div id="enroll-msg" class="text-[11px] font-bold"></div>
+                <div id="enroll-msg" class="is-size-7 has-text-weight-bold"></div>
             </div>
         </div>
     </div>
@@ -248,15 +320,17 @@
 </div>
 
 <!-- MODAL PERINGATAN ENROLL -->
-<div id="modalEnrollWarning" class="fixed inset-0 bg-slate-900/50 z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-white rounded-2xl max-w-sm w-full p-5 text-center shadow-xl">
-        <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-2xl flex items-center justify-center mx-auto mb-2">
-            <i class="fa-solid fa-triangle-exclamation text-xl"></i>
+<div class="modal" id="modalEnrollWarning">
+    <div class="modal-background" onclick="tutupModalEnroll()"></div>
+    <div class="modal-content p-4">
+        <div class="box has-text-centered p-5" style="border-radius: 16px;">
+            <span class="icon is-large has-text-warning mb-3"><i class="fa-solid fa-triangle-exclamation fa-3x"></i></span>
+            <h5 class="title is-6 has-text-weight-bold mb-1">Wajah Belum Direkam!</h5>
+            <p class="is-size-7 has-text-grey mb-4">Silakan daftarkan wajah Anda terlebih dahulu sebelum absen.</p>
+            <button onclick="keHalamanEnroll()" class="button is-link is-fullwidth is-small has-text-weight-bold">Daftar Sekarang</button>
         </div>
-        <h5 class="text-sm font-bold text-slate-800 mb-1">Wajah Belum Direkam!</h5>
-        <p class="text-[11px] text-slate-500 mb-4">Silakan daftarkan wajah Anda terlebih dahulu sebelum absen.</p>
-        <button onclick="keHalamanEnroll()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-xl text-xs transition">Daftar Sekarang</button>
     </div>
+    <button class="modal-close is-large" aria-label="close" onclick="tutupModalEnroll()"></button>
 </div>
 
 <!-- JS Dependencies -->
@@ -350,24 +424,24 @@
         }
 
         ['page-main', 'page-history', 'page-user', 'page-gps', 'page-face', 'page-enroll'].forEach(p => {
-            document.getElementById(p).classList.add('hidden');
+            document.getElementById(p).classList.add('is-hidden');
         });
 
         ['main', 'history', 'user'].forEach(n => {
             const btn = document.getElementById(`nav-${n}`);
             if(btn) {
-                btn.className = "flex flex-col items-center text-slate-400 hover:text-slate-600";
+                btn.className = "button is-ghost is-flex-direction-column has-text-grey border-0 p-1";
             }
         });
 
         if (page === 'main' || page === 'history' || page === 'user') {
-            document.getElementById(`page-${page}`).classList.remove('hidden');
+            document.getElementById(`page-${page}`).classList.remove('is-hidden');
             const activeNav = document.getElementById(`nav-${page}`);
             if(activeNav) {
-                activeNav.className = "flex flex-col items-center text-blue-600";
+                activeNav.className = "button is-ghost is-flex-direction-column has-text-link border-0 p-1";
             }
         } else {
-            document.getElementById(`page-${page}`).classList.remove('hidden');
+            document.getElementById(`page-${page}`).classList.remove('is-hidden');
             if (page === 'gps') {
                 initMap();
             }
@@ -396,17 +470,17 @@
 
                 if(currentUser.jam_datang) {
                     document.getElementById('time-datang-text').innerText = currentUser.jam_datang;
-                    document.getElementById('badge-datang-status').className = "bg-emerald-100 text-emerald-700 text-[9px] font-semibold px-1.5 py-0.5 rounded-full";
+                    document.getElementById('badge-datang-status').className = "tag is-success is-small";
                     document.getElementById('badge-datang-status').innerText = "Sudah";
                 }
                 if(currentUser.jam_pulang) {
                     document.getElementById('time-pulang-text').innerText = currentUser.jam_pulang;
-                    document.getElementById('badge-pulang-status').className = "bg-emerald-100 text-emerald-700 text-[9px] font-semibold px-1.5 py-0.5 rounded-full";
+                    document.getElementById('badge-pulang-status').className = "tag is-success is-small";
                     document.getElementById('badge-pulang-status').innerText = "Sudah";
                 }
 
-                document.getElementById('page-login').classList.add('hidden');
-                document.getElementById('bottom-nav').classList.remove('hidden');
+                document.getElementById('page-login').classList.add('is-hidden');
+                document.getElementById('bottom-nav').classList.remove('is-hidden');
                 await ambilKonfigurasiSekolah();
                 switchPage('main');
             } else {
@@ -420,9 +494,9 @@
     function logout() {
         currentUser = null;
         if(activeStream) activeStream.getTracks().forEach(t => t.stop());
-        document.getElementById('bottom-nav').classList.add('hidden');
-        document.getElementById('page-login').classList.remove('hidden');
-        ['page-main', 'page-history', 'page-user'].forEach(p => document.getElementById(p).classList.add('hidden'));
+        document.getElementById('bottom-nav').classList.add('is-hidden');
+        document.getElementById('page-login').classList.remove('is-hidden');
+        ['page-main', 'page-history', 'page-user'].forEach(p => document.getElementById(p).classList.add('is-hidden'));
     }
 
     function bukaValidasiGPS(tipe) {
@@ -454,11 +528,11 @@
                     const statusBadge = document.getElementById('gps-status-info');
                     const btnLanjut = document.getElementById('btn-lanjut-absen');
                     if (jarak <= radiusMaksimal) {
-                        statusBadge.className = "inline-block bg-emerald-100 text-emerald-800 text-[10px] font-semibold px-2.5 py-0.5 rounded-full mb-3";
+                        statusBadge.className = "tag is-success is-small mb-2";
                         statusBadge.innerText = "Radius Valid (Di dalam sekolah)";
                         btnLanjut.disabled = false;
                     } else {
-                        statusBadge.className = "inline-block bg-rose-100 text-rose-800 text-[10px] font-semibold px-2.5 py-0.5 rounded-full mb-3";
+                        statusBadge.className = "tag is-danger is-small mb-2";
                         statusBadge.innerText = `Diluar Radius (${Math.round(jarak)}m > ${radiusMaksimal}m)`;
                         btnLanjut.disabled = true;
                     }
@@ -476,7 +550,7 @@
 
     function lanjutKeKamera() {
         if (!currentUser.is_enrolled) {
-            document.getElementById('modalEnrollWarning').classList.remove('hidden');
+            document.getElementById('modalEnrollWarning').classList.add('is-active');
             return;
         }
         document.getElementById('tipe-absen-label').innerText = selectedTipeAbsen;
@@ -484,7 +558,7 @@
     }
 
     function tutupModalEnroll() {
-        document.getElementById('modalEnrollWarning').classList.add('hidden');
+        document.getElementById('modalEnrollWarning').classList.remove('is-active');
     }
 
     function keHalamanEnroll() {
@@ -513,11 +587,11 @@
                 ctx.lineWidth = 4;
                 ctx.strokeRect(box.x, box.y, box.width, box.height);
 
-                statusMsg.className = "text-[11px] font-bold text-emerald-600";
+                statusMsg.className = "is-size-7 has-text-weight-bold has-text-success";
                 statusMsg.innerText = "Wajah Terverifikasi: " + currentUser.nama;
                 btnAbsen.disabled = false;
             } else {
-                statusMsg.className = "text-[11px] font-bold text-amber-500";
+                statusMsg.className = "is-size-7 has-text-weight-bold has-text-warning";
                 statusMsg.innerText = "Mencari Wajah...";
                 btnAbsen.disabled = true;
             }
@@ -526,7 +600,7 @@
 
     async function prosesEnroll() {
         const msg = document.getElementById('enroll-msg');
-        msg.className = "text-[11px] font-bold text-blue-600"; msg.innerText = "Merekam wajah...";
+        msg.className = "is-size-7 has-text-weight-bold has-text-info"; msg.innerText = "Merekam wajah...";
 
         try {
             const video = document.getElementById('video-enroll');
@@ -551,19 +625,19 @@
             if (result.status === "success") {
                 currentUser.is_enrolled = true;
                 currentUser.image_url = cloudData.secure_url;
-                msg.className = "text-[11px] font-bold text-emerald-600"; msg.innerText = "Enroll wajah berhasil!";
+                msg.className = "is-size-7 has-text-weight-bold has-text-success"; msg.innerText = "Enroll wajah berhasil!";
                 setTimeout(() => switchPage('user'), 1500);
             } else {
                 throw new Error(result.message);
             }
         } catch (e) {
-            msg.className = "text-[11px] font-bold text-rose-500"; msg.innerText = "Error: " + e.message;
+            msg.className = "is-size-7 has-text-weight-bold has-text-danger"; msg.innerText = "Error: " + e.message;
         }
     }
 
     async function eksekusiKirimAbsen() {
         const msgEl = document.getElementById('absen-status-msg');
-        msgEl.className = "text-[11px] font-bold text-blue-600";
+        msgEl.className = "is-size-7 has-text-weight-bold has-text-info";
         msgEl.innerText = "Menyimpan absensi ke database...";
 
         try {
@@ -582,22 +656,22 @@
                 const jamSekarang = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
                 if(selectedTipeAbsen === "Datang") {
                     document.getElementById('time-datang-text').innerText = jamSekarang;
-                    document.getElementById('badge-datang-status').className = "bg-emerald-100 text-emerald-700 text-[9px] font-semibold px-1.5 py-0.5 rounded-full";
+                    document.getElementById('badge-datang-status').className = "tag is-success is-small";
                     document.getElementById('badge-datang-status').innerText = "Sudah";
                 } else {
                     document.getElementById('time-pulang-text').innerText = jamSekarang;
-                    document.getElementById('badge-pulang-status').className = "bg-emerald-100 text-emerald-700 text-[9px] font-semibold px-1.5 py-0.5 rounded-full";
+                    document.getElementById('badge-pulang-status').className = "tag is-success is-small";
                     document.getElementById('badge-pulang-status').innerText = "Sudah";
                 }
 
-                msgEl.className = "text-[11px] font-bold text-emerald-600";
+                msgEl.className = "is-size-7 has-text-weight-bold has-text-success";
                 msgEl.innerText = `Absen ${selectedTipeAbsen} Berhasil!`;
                 setTimeout(() => switchPage('main'), 1500);
             } else {
                 throw new Error(gasResult.message);
             }
         } catch (error) {
-            msgEl.className = "text-[11px] font-bold text-rose-500";
+            msgEl.className = "is-size-7 has-text-weight-bold has-text-danger";
             msgEl.innerText = "Gagal: " + error.message;
         }
     }
