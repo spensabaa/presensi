@@ -7,8 +7,8 @@
     
     <!-- Google Fonts Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Bulma CSS Framework -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <!-- Bootstrap 5 CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Leaflet CSS -->
@@ -93,7 +93,7 @@
             left: 0;
             right: 0;
             background: white;
-            border-top: 1px solid #dbdbdb;
+            border-top: 1px solid #dee2e6;
             z-index: 40;
             display: flex;
             justify-content: space-around;
@@ -106,100 +106,100 @@
 <div class="app-container">
 
     <!-- ================= HALAMAN LOGIN ================= -->
-    <div id="page-login" class="main-content login-bg is-flex is-flex-direction-column is-justify-content-center is-align-items-center has-text-white">
+    <div id="page-login" class="main-content login-bg d-flex flex-column justify-content-center align-items-center text-white">
         <!-- Floating Icons Dekoratif -->
-        <div class="is-absolute" style="top: 2rem; left: 2rem; opacity: 0.2; font-size: 2rem;"><i class="fa-solid fa-graduation-cap"></i></div>
-        <div class="is-absolute" style="top: 4rem; right: 2rem; opacity: 0.2; font-size: 1.8rem;"><i class="fa-solid fa-shield-halved"></i></div>
-        <div class="is-absolute" style="bottom: 6rem; left: 2rem; opacity: 0.2; font-size: 1.8rem;"><i class="fa-solid fa-location-dot"></i></div>
-        <div class="is-absolute" style="bottom: 7rem; right: 2rem; opacity: 0.2; font-size: 2rem;"><i class="fa-solid fa-face-smile"></i></div>
+        <div class="position-absolute" style="top: 2rem; left: 2rem; opacity: 0.2; font-size: 2rem;"><i class="fa-solid fa-graduation-cap"></i></div>
+        <div class="position-absolute" style="top: 4rem; right: 2rem; opacity: 0.2; font-size: 1.8rem;"><i class="fa-solid fa-shield-halved"></i></div>
+        <div class="position-absolute" style="bottom: 6rem; left: 2rem; opacity: 0.2; font-size: 1.8rem;"><i class="fa-solid fa-location-dot"></i></div>
+        <div class="position-absolute" style="bottom: 7rem; right: 2rem; opacity: 0.2; font-size: 2rem;"><i class="fa-solid fa-face-smile"></i></div>
 
-        <div class="has-text-centered mb-4" style="z-index: 10;">
-            <div class="b-radius-rounded bg-white p-3 has-text-link mx-auto mb-2 shadow" style="width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border-radius: 16px;">
+        <div class="text-center mb-4" style="z-index: 10;">
+            <div class="bg-white p-3 text-primary mx-auto mb-2 shadow rounded-4 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
                 <i class="fa-solid fa-school-circle-check fa-2x"></i>
             </div>
-            <h3 class="title is-5 has-text-white mb-1">Portal Absensi</h3>
-            <p class="is-size-7 has-text-light">Sistem Verifikasi Wajah & Lokasi Sekolah</p>
+            <h3 class="h5 text-white mb-1 fw-bold">Portal Absensi</h3>
+            <p class="small text-white-50">Sistem Verifikasi Wajah & Lokasi Sekolah</p>
         </div>
         
-        <div class="box p-4 w-100 shadow-lg" style="border-radius: 20px; background: rgba(255, 255, 255, 0.95); z-index: 10; width: 100%;">
-            <div class="field mb-3">
-                <label class="label is-size-7 has-text-grey-dark mb-1">NISN Siswa</label>
-                <div class="control has-icons-left">
-                    <input class="input is-small" type="text" id="login-nisn" placeholder="Contoh: 0081234567">
-                    <span class="icon is-small is-left"><i class="fa-solid fa-id-card"></i></span>
+        <div class="card p-4 shadow-lg border-0 w-100 rounded-4" style="background: rgba(255, 255, 255, 0.95); z-index: 10;">
+            <div class="mb-3">
+                <label class="form-label small text-secondary fw-semibold mb-1">NISN Siswa</label>
+                <div class="input-group input-group-sm">
+                    <span class="input-group-text bg-light text-muted"><i class="fa-solid fa-id-card"></i></span>
+                    <input type="text" id="login-nisn" class="form-control form-control-sm bg-light" placeholder="Contoh: 0081234567">
                 </div>
             </div>
 
-            <div class="field mb-4">
-                <label class="label is-size-7 has-text-grey-dark mb-1">Password</label>
-                <div class="control has-icons-left">
-                    <input class="input is-small" type="password" id="login-pass" placeholder="Masukkan password">
-                    <span class="icon is-small is-left"><i class="fa-solid fa-lock"></i></span>
+            <div class="mb-4">
+                <label class="form-label small text-secondary fw-semibold mb-1">Password</label>
+                <div class="input-group input-group-sm">
+                    <span class="input-group-text bg-light text-muted"><i class="fa-solid fa-lock"></i></span>
+                    <input type="password" id="login-pass" class="form-control form-control-sm bg-light" placeholder="Masukkan password">
                 </div>
             </div>
 
-            <button onclick="prosesLogin()" class="button is-link is-fullwidth is-small has-text-weight-bold py-3">Masuk Aplikasi</button>
-            <div id="login-error" class="has-text-danger has-text-centered mt-2 is-size-7 has-text-weight-semibold"></div>
+            <button onclick="prosesLogin()" class="btn btn-primary btn-sm w-100 fw-bold py-2 shadow-sm">Masuk Aplikasi</button>
+            <div id="login-error" class="text-danger text-center mt-2 small fw-semibold"></div>
         </div>
     </div>
 
     <!-- ================= HALAMAN UTAMA (HOME) ================= -->
-    <div id="page-main" class="main-content is-hidden">
-        <div class="notification is-link has-text-centered py-2 px-3 mb-2" style="border-radius: 12px; background: linear-gradient(135deg, #3273dc 0%, #20bc56 100%);">
-            <div id="live-date" class="is-size-7 mb-0" style="opacity: 0.9;">-</div>
-            <h2 id="live-time" class="title is-5 has-text-white mb-0">00:00:00 WIB</h2>
+    <div id="page-main" class="main-content d-none">
+        <div class="alert text-white text-center py-2 px-3 mb-2 shadow-sm rounded-3" style="background: linear-gradient(135deg, #0d6efd 0%, #198754 100%);">
+            <div id="live-date" class="small opacity-75 mb-0" style="font-size: 10px;">-</div>
+            <h2 id="live-time" class="h5 mb-0 fw-bold">00:00:00 WIB</h2>
         </div>
 
-        <div class="box p-3 mb-2 is-flex is-align-items-center shadowless border" style="border-radius: 12px;">
-            <div class="is-flex-grow-1">
-                <span class="is-size-7 has-text-grey">Selamat Datang,</span>
-                <h5 id="user-name" class="title is-6 has-text-weight-bold mb-1">-</h5>
-                <span class="tag is-light is-rounded is-small has-text-weight-semibold" id="user-nisn-display">NISN: -</span>
+        <div class="card p-3 mb-2 border shadow-sm rounded-3 d-flex flex-row align-items-center">
+            <div class="flex-grow-1">
+                <span class="text-muted" style="font-size: 10px;">Selamat Datang,</span>
+                <h5 id="user-name" class="h6 fw-bold text-dark mb-1">-</h5>
+                <span class="badge bg-light text-secondary border fw-semibold" style="font-size: 9px;" id="user-nisn-display">NISN: -</span>
             </div>
-            <span class="icon is-large has-text-link">
-                <i class="fa-solid fa-user-graduate fa-lg"></i>
-            </span>
+            <div class="text-primary">
+                <i class="fa-solid fa-user-graduate fa-2x"></i>
+            </div>
         </div>
 
-        <div class="box p-3 mb-12 is-flex-grow-1 is-flex is-flex-direction-column is-justify-content-space-between" style="border-radius: 12px;">
-            <h6 class="title is-6 has-text-weight-bold mb-2"><i class="fa-solid fa-calendar-check mr-2 text-link"></i>Presensi Harian</h6>
+        <div class="card p-3 mb-5 border shadow-sm rounded-3 flex-grow-1 d-flex flex-column justify-content-between">
+            <h6 class="fw-bold text-dark mb-2 small"><i class="fa-solid fa-calendar-check text-primary me-2"></i>Presensi Harian</h6>
             
-            <div class="columns is-mobile">
+            <div class="row g-2">
                 <!-- Absen Datang -->
-                <div class="column is-6">
-                    <div class="box has-background-light p-2 shadowless border is-flex is-flex-direction-column is-justify-content-space-between" style="border-radius: 10px; height: 100%;">
+                <div class="col-6">
+                    <div class="bg-light p-2 border rounded-3 d-flex flex-column justify-content-between h-100">
                         <div>
-                            <div class="is-flex is-justify-content-between is-align-items-center mb-1">
-                                <span class="has-text-success has-text-weight-bold is-size-7"><i class="fa-solid fa-right-to-bracket"></i> Datang</span>
-                                <span id="badge-datang-status" class="tag is-light is-small" style="font-size: 9px; height: 16px;">Belum</span>
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <span class="text-success fw-bold small" style="font-size: 11px;"><i class="fa-solid fa-right-to-bracket"></i> Datang</span>
+                                <span id="badge-datang-status" class="badge bg-secondary text-white" style="font-size: 8px;">Belum</span>
                             </div>
-                            <div class="notification is-white p-1 mb-2 border has-text-centered" style="border-radius: 6px;">
-                                <div style="font-size: 9px;" class="has-text-grey">Jadwal Masuk</div>
-                                <div id="jadwal-datang-text" class="has-text-weight-bold is-size-7 has-text-dark">-</div>
+                            <div class="bg-white p-1 mb-2 border text-center rounded-2">
+                                <div class="text-muted" style="font-size: 8px;">Jadwal Masuk</div>
+                                <div id="jadwal-datang-text" class="fw-bold text-dark small">-</div>
                             </div>
-                            <div style="font-size: 10px;" class="has-text-grey mb-2">Absen: <strong id="time-datang-text" class="has-text-dark">--:--</strong></div>
+                            <div class="text-muted mb-2" style="font-size: 9px;">Absen: <strong id="time-datang-text" class="text-dark">--:--</strong></div>
                         </div>
-                        <button onclick="bukaValidasiGPS('Datang')" class="button is-success is-fullwidth has-text-weight-bold is-small py-1" style="font-size: 10px;">
+                        <button onclick="bukaValidasiGPS('Datang')" class="btn btn-success btn-sm w-100 fw-bold py-1" style="font-size: 10px;">
                             Absen Datang
                         </button>
                     </div>
                 </div>
 
                 <!-- Absen Pulang -->
-                <div class="column is-6">
-                    <div class="box has-background-light p-2 shadowless border is-flex is-flex-direction-column is-justify-content-space-between" style="border-radius: 10px; height: 100%;">
+                <div class="col-6">
+                    <div class="bg-light p-2 border rounded-3 d-flex flex-column justify-content-between h-100">
                         <div>
-                            <div class="is-flex is-justify-content-between is-align-items-center mb-1">
-                                <span class="has-text-danger has-text-weight-bold is-size-7"><i class="fa-solid fa-right-from-bracket"></i> Pulang</span>
-                                <span id="badge-pulang-status" class="tag is-light is-small" style="font-size: 9px; height: 16px;">Belum</span>
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <span class="text-danger fw-bold small" style="font-size: 11px;"><i class="fa-solid fa-right-from-bracket"></i> Pulang</span>
+                                <span id="badge-pulang-status" class="badge bg-secondary text-white" style="font-size: 8px;">Belum</span>
                             </div>
-                            <div class="notification is-white p-1 mb-2 border has-text-centered" style="border-radius: 6px;">
-                                <div style="font-size: 9px;" class="has-text-grey">Jadwal Pulang</div>
-                                <div id="jadwal-pulang-text" class="has-text-weight-bold is-size-7 has-text-dark">-</div>
+                            <div class="bg-white p-1 mb-2 border text-center rounded-2">
+                                <div class="text-muted" style="font-size: 8px;">Jadwal Pulang</div>
+                                <div id="jadwal-pulang-text" class="fw-bold text-dark small">-</div>
                             </div>
-                            <div style="font-size: 10px;" class="has-text-grey mb-2">Absen: <strong id="time-pulang-text" class="has-text-dark">--:--</strong></div>
+                            <div class="text-muted mb-2" style="font-size: 9px;">Absen: <strong id="time-pulang-text" class="text-dark">--:--</strong></div>
                         </div>
-                        <button onclick="bukaValidasiGPS('Pulang')" class="button is-danger is-fullwidth has-text-weight-bold is-small py-1" style="font-size: 10px;">
+                        <button onclick="bukaValidasiGPS('Pulang')" class="btn btn-danger btn-sm w-100 fw-bold py-1" style="font-size: 10px;">
                             Absen Pulang
                         </button>
                     </div>
@@ -209,110 +209,110 @@
     </div>
 
     <!-- ================= HALAMAN HISTORY ================= -->
-    <div id="page-history" class="main-content is-hidden">
-        <h4 class="title is-5 has-text-weight-bold mb-3">Riwayat Absensi</h4>
-        <div class="box has-text-centered py-6 my-auto shadowless border" style="border-radius: 12px;">
-            <span class="icon is-large has-text-grey-light mb-2"><i class="fa-solid fa-clock-rotate-left fa-2x"></i></span>
-            <p class="has-text-grey is-size-7">Log riwayat presensi tersinkronisasi otomatis dengan database sistem.</p>
+    <div id="page-history" class="main-content d-none">
+        <h4 class="h6 fw-bold text-dark mb-3">Riwayat Absensi</h4>
+        <div class="card text-center py-5 my-auto border shadow-sm rounded-3">
+            <span class="text-muted mb-2"><i class="fa-solid fa-clock-rotate-left fa-2x"></i></span>
+            <p class="text-muted small mb-0 px-3">Log riwayat presensi tersinkronisasi otomatis dengan database sistem.</p>
         </div>
         <div></div>
     </div>
 
     <!-- ================= HALAMAN USER (PROFIL) ================= -->
-    <div id="page-user" class="main-content is-hidden">
-        <h4 class="title is-5 has-text-weight-bold mb-3">Profil & Keamanan</h4>
-        <div class="box p-3 mb-2 shadowless border" style="border-radius: 12px;">
-            <p class="is-size-7 has-text-grey mb-1">Nama Siswa:</p>
-            <h5 id="profile-name" class="title is-6 has-text-weight-bold mb-2">-</h5>
-            <p class="is-size-7 has-text-grey mb-1">NISN:</p>
-            <h6 id="profile-nisn" class="subtitle is-6 has-text-weight-bold mb-0">-</h6>
+    <div id="page-user" class="main-content d-none">
+        <h4 class="h6 fw-bold text-dark mb-3">Profil & Keamanan</h4>
+        <div class="card p-3 mb-2 border shadow-sm rounded-3">
+            <p class="text-muted mb-1" style="font-size: 10px;">Nama Siswa:</p>
+            <h5 id="profile-name" class="h6 fw-bold text-dark mb-2">-</h5>
+            <p class="text-muted mb-1" style="font-size: 10px;">NISN:</p>
+            <h6 id="profile-nisn" class="small fw-bold text-dark mb-0">-</h6>
         </div>
 
-        <div class="box p-3 mb-3 is-flex is-align-items-center is-justify-content-between shadowless border" style="border-radius: 12px;">
+        <div class="card p-3 mb-3 border shadow-sm rounded-3 d-flex flex-row align-items-center justify-content-between">
             <div>
-                <h6 class="title is-6 has-text-weight-bold mb-1">Biometrik Wajah</h6>
-                <p class="is-size-7 has-text-grey">Perbarui sampel foto profil Anda</p>
+                <h6 class="fw-bold text-dark small mb-1">Biometrik Wajah</h6>
+                <p class="text-muted mb-0" style="font-size: 10px;">Perbarui sampel foto profil Anda</p>
             </div>
-            <button onclick="switchPage('enroll')" class="button is-small is-link is-outlined has-text-weight-bold">Enroll Ulang</button>
+            <button onclick="switchPage('enroll')" class="btn btn-outline-primary btn-sm fw-bold" style="font-size: 11px;">Enroll Ulang</button>
         </div>
 
-        <button onclick="logout()" class="button is-danger is-outlined is-fullwidth has-text-weight-bold is-small">Keluar Akun</button>
+        <button onclick="logout()" class="btn btn-outline-danger btn-sm w-100 fw-bold">Keluar Akun</button>
         <div></div>
     </div>
 
     <!-- ================= BOTTOM NAVIGATION BAR ================= -->
-    <nav id="bottom-nav" class="bottom-nav is-hidden">
-        <button onclick="switchPage('main')" id="nav-main" class="button is-ghost is-flex-direction-column has-text-link border-0 p-1">
-            <i class="fa-solid fa-house fa-sm mb-1"></i>
-            <span style="font-size: 10px;" class="has-text-weight-semibold">Beranda</span>
+    <nav id="bottom-nav" class="bottom-nav d-none">
+        <button onclick="switchPage('main')" id="nav-main" class="btn btn-link text-decoration-none text-primary d-flex flex-column align-items-center p-1">
+            <i class="fa-solid fa-house mb-1"></i>
+            <span style="font-size: 10px;" class="fw-semibold">Beranda</span>
         </button>
-        <button onclick="switchPage('history')" id="nav-history" class="button is-ghost is-flex-direction-column has-text-grey border-0 p-1">
-            <i class="fa-solid fa-clock-rotate-left fa-sm mb-1"></i>
-            <span style="font-size: 10px;" class="has-text-weight-semibold">Riwayat</span>
+        <button onclick="switchPage('history')" id="nav-history" class="btn btn-link text-decoration-none text-muted d-flex flex-column align-items-center p-1">
+            <i class="fa-solid fa-clock-rotate-left mb-1"></i>
+            <span style="font-size: 10px;" class="fw-semibold">Riwayat</span>
         </button>
-        <button onclick="switchPage('user')" id="nav-user" class="button is-ghost is-flex-direction-column has-text-grey border-0 p-1">
-            <i class="fa-solid fa-user fa-sm mb-1"></i>
-            <span style="font-size: 10px;" class="has-text-weight-semibold">Profil</span>
+        <button onclick="switchPage('user')" id="nav-user" class="btn btn-link text-decoration-none text-muted d-flex flex-column align-items-center p-1">
+            <i class="fa-solid fa-user mb-1"></i>
+            <span style="font-size: 10px;" class="fw-semibold">Profil</span>
         </button>
     </nav>
 
     <!-- ================= SUB-HALAMAN (GPS, KAMERA, ENROLL) ================= -->
 
     <!-- HALAMAN GPS -->
-    <div id="page-gps" class="sub-page is-hidden">
-        <div class="is-flex is-align-items-center mb-3">
-            <button onclick="switchPage('main')" class="button is-light is-rounded mr-3 is-small"><i class="fa-solid fa-arrow-left"></i></button>
-            <h4 class="title is-5 has-text-weight-bold mb-0">Validasi Lokasi GPS</h4>
+    <div id="page-gps" class="sub-page d-none">
+        <div class="d-flex align-items-center mb-3">
+            <button onclick="switchPage('main')" class="btn btn-light btn-sm rounded-circle me-3 shadow-sm" style="width: 32px; height: 32px;"><i class="fa-solid fa-arrow-left"></i></button>
+            <h4 class="h6 fw-bold text-dark mb-0">Validasi Lokasi GPS</h4>
         </div>
-        <div class="box p-3 shadowless border is-flex-grow-1 is-flex is-flex-direction-column is-justify-content-space-between" style="border-radius: 12px;">
+        <div class="card p-3 border shadow-sm rounded-3 flex-grow-1 d-flex flex-column justify-content-between">
             <div id="map"></div>
-            <div class="has-text-centered">
-                <p class="is-size-7 has-text-grey mb-1">Jarak Anda ke Titik Sekolah:</p>
-                <h3 id="jarak-text" class="title is-5 has-text-link mb-1">Menghitung GPS...</h3>
-                <span id="gps-status-info" class="tag is-warning is-small mb-2">Mencari koordinat akurat...</span>
-                <button id="btn-lanjut-absen" onclick="lanjutKeKamera()" class="button is-link is-fullwidth has-text-weight-bold is-small py-3" disabled>
-                    Lanjut ke Verifikasi Wajah <i class="fa-solid fa-arrow-right ml-1"></i>
+            <div class="text-center">
+                <p class="text-muted mb-1" style="font-size: 11px;">Jarak Anda ke Titik Sekolah:</p>
+                <h3 id="jarak-text" class="h5 fw-bold text-primary mb-1">Menghitung GPS...</h3>
+                <span id="gps-status-info" class="badge bg-warning text-dark mb-3" style="font-size: 10px;">Mencari koordinat akurat...</span>
+                <button id="btn-lanjut-absen" onclick="lanjutKeKamera()" class="btn btn-primary btn-sm w-100 fw-bold py-2 shadow-sm" disabled>
+                    Lanjut ke Verifikasi Wajah <i class="fa-solid fa-arrow-right ms-1"></i>
                 </button>
             </div>
         </div>
     </div>
 
     <!-- HALAMAN KAMERA WAJAH -->
-    <div id="page-face" class="sub-page is-hidden">
-        <div class="is-flex is-align-items-center mb-3">
-            <button onclick="switchPage('gps')" class="button is-light is-rounded mr-3 is-small"><i class="fa-solid fa-arrow-left"></i></button>
-            <h4 class="title is-5 has-text-weight-bold mb-0">Verifikasi (<span id="tipe-absen-label">Datang</span>)</h4>
+    <div id="page-face" class="sub-page d-none">
+        <div class="d-flex align-items-center mb-3">
+            <button onclick="switchPage('gps')" class="btn btn-light btn-sm rounded-circle me-3 shadow-sm" style="width: 32px; height: 32px;"><i class="fa-solid fa-arrow-left"></i></button>
+            <h4 class="h6 fw-bold text-dark mb-0">Verifikasi (<span id="tipe-absen-label">Datang</span>)</h4>
         </div>
-        <div class="box p-3 shadowless border has-text-centered is-flex-grow-1 is-flex is-flex-direction-column is-justify-content-space-between" style="border-radius: 12px;">
+        <div class="card p-3 border shadow-sm rounded-3 text-center flex-grow-1 d-flex flex-column justify-content-between">
             <div class="video-container my-auto">
                 <video id="video-preview" autoplay playsinline muted></video>
                 <canvas id="overlay-canvas"></canvas>
             </div>
             <div>
-                <button id="btn-eksekusi-absen" onclick="eksekusiKirimAbsen()" class="button is-success is-fullwidth has-text-weight-bold is-small py-3 mb-2" disabled>
-                    <i class="fa-solid fa-check mr-1"></i> Konfirmasi Absen
+                <button id="btn-eksekusi-absen" onclick="eksekusiKirimAbsen()" class="btn btn-success btn-sm w-100 fw-bold py-2 mb-2 shadow-sm" disabled>
+                    <i class="fa-solid fa-check me-1"></i> Konfirmasi Absen
                 </button>
-                <div id="absen-status-msg" class="is-size-7 has-text-weight-bold has-text-danger">Posisikan wajah di depan kamera...</div>
+                <div id="absen-status-msg" class="small fw-bold text-danger">Posisikan wajah di depan kamera...</div>
             </div>
         </div>
     </div>
 
     <!-- HALAMAN ENROLL WAJAH -->
-    <div id="page-enroll" class="sub-page is-hidden">
-        <div class="is-flex is-align-items-center mb-3">
-            <button onclick="switchPage('user')" class="button is-light is-rounded mr-3 is-small"><i class="fa-solid fa-arrow-left"></i></button>
-            <h4 class="title is-5 has-text-weight-bold mb-0">Pendaftaran Wajah</h4>
+    <div id="page-enroll" class="sub-page d-none">
+        <div class="d-flex align-items-center mb-3">
+            <button onclick="switchPage('user')" class="btn btn-light btn-sm rounded-circle me-3 shadow-sm" style="width: 32px; height: 32px;"><i class="fa-solid fa-arrow-left"></i></button>
+            <h4 class="h6 fw-bold text-dark mb-0">Pendaftaran Wajah</h4>
         </div>
-        <div class="box p-3 shadowless border has-text-centered is-flex-grow-1 is-flex is-flex-direction-column is-justify-content-space-between" style="border-radius: 12px;">
-            <p class="is-size-7 has-text-grey">Posisikan wajah Anda dengan jelas di depan kamera untuk disimpan ke profil.</p>
+        <div class="card p-3 border shadow-sm rounded-3 text-center flex-grow-1 d-flex flex-column justify-content-between">
+            <p class="text-muted small mb-0">Posisikan wajah Anda dengan jelas di depan kamera untuk disimpan ke profil.</p>
             <div class="video-container my-auto">
                 <video id="video-enroll" autoplay playsinline muted></video>
             </div>
             <div>
-                <button onclick="prosesEnroll()" class="button is-info is-fullwidth has-text-weight-bold is-small py-3 mb-2">
-                    <i class="fa-solid fa-camera mr-1"></i> Rekam & Simpan Wajah
+                <button onclick="prosesEnroll()" class="btn btn-info btn-sm w-100 fw-bold py-2 text-white mb-2 shadow-sm">
+                    <i class="fa-solid fa-camera me-1"></i> Rekam & Simpan Wajah
                 </button>
-                <div id="enroll-msg" class="is-size-7 has-text-weight-bold"></div>
+                <div id="enroll-msg" class="small fw-bold"></div>
             </div>
         </div>
     </div>
@@ -320,21 +320,24 @@
 </div>
 
 <!-- MODAL PERINGATAN ENROLL -->
-<div class="modal" id="modalEnrollWarning">
-    <div class="modal-background" onclick="tutupModalEnroll()"></div>
-    <div class="modal-content p-4">
-        <div class="box has-text-centered p-5" style="border-radius: 16px;">
-            <span class="icon is-large has-text-warning mb-3"><i class="fa-solid fa-triangle-exclamation fa-3x"></i></span>
-            <h5 class="title is-6 has-text-weight-bold mb-1">Wajah Belum Direkam!</h5>
-            <p class="is-size-7 has-text-grey mb-4">Silakan daftarkan wajah Anda terlebih dahulu sebelum absen.</p>
-            <button onclick="keHalamanEnroll()" class="button is-link is-fullwidth is-small has-text-weight-bold">Daftar Sekarang</button>
+<div class="modal fade" id="modalEnrollWarning" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content rounded-4 border-0 shadow">
+            <div class="modal-body text-center p-4">
+                <div class="bg-warning-subtle text-warning rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                    <i class="fa-solid fa-triangle-exclamation fa-lg"></i>
+                </div>
+                <h5 class="h6 fw-bold mb-1">Wajah Belum Direkam!</h5>
+                <p class="text-muted small mb-3">Silakan daftarkan wajah Anda terlebih dahulu sebelum absen.</p>
+                <button onclick="keHalamanEnroll()" class="btn btn-primary btn-sm w-100 fw-bold">Daftar Sekarang</button>
+            </div>
         </div>
     </div>
-    <button class="modal-close is-large" aria-label="close" onclick="tutupModalEnroll()"></button>
 </div>
 
 <!-- JS Dependencies -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
     const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxzSV57ciDdJZrOfgUYdx_o2EBDgFccfdaU2T7r2-9l93E76CLNlaq28c8vF7wMc94kcA/exec";
@@ -423,25 +426,25 @@
             activeStream.getTracks().forEach(t => t.stop());
         }
 
-        ['page-main', 'page-history', 'page-user', 'page-gps', 'page-face', 'page-enroll'].forEach(p => {
-            document.getElementById(p).classList.add('is-hidden');
+        ['page-login', 'page-main', 'page-history', 'page-user', 'page-gps', 'page-face', 'page-enroll'].forEach(p => {
+            document.getElementById(p).classList.add('d-none');
         });
 
         ['main', 'history', 'user'].forEach(n => {
             const btn = document.getElementById(`nav-${n}`);
             if(btn) {
-                btn.className = "button is-ghost is-flex-direction-column has-text-grey border-0 p-1";
+                btn.className = "btn btn-link text-decoration-none text-muted d-flex flex-column align-items-center p-1";
             }
         });
 
         if (page === 'main' || page === 'history' || page === 'user') {
-            document.getElementById(`page-${page}`).classList.remove('is-hidden');
+            document.getElementById(`page-${page}`).classList.remove('d-none');
             const activeNav = document.getElementById(`nav-${page}`);
             if(activeNav) {
-                activeNav.className = "button is-ghost is-flex-direction-column has-text-link border-0 p-1";
+                activeNav.className = "btn btn-link text-decoration-none text-primary d-flex flex-column align-items-center p-1";
             }
         } else {
-            document.getElementById(`page-${page}`).classList.remove('is-hidden');
+            document.getElementById(`page-${page}`).classList.remove('d-none');
             if (page === 'gps') {
                 initMap();
             }
@@ -470,17 +473,17 @@
 
                 if(currentUser.jam_datang) {
                     document.getElementById('time-datang-text').innerText = currentUser.jam_datang;
-                    document.getElementById('badge-datang-status').className = "tag is-success is-small";
+                    document.getElementById('badge-datang-status').className = "badge bg-success text-white";
                     document.getElementById('badge-datang-status').innerText = "Sudah";
                 }
                 if(currentUser.jam_pulang) {
                     document.getElementById('time-pulang-text').innerText = currentUser.jam_pulang;
-                    document.getElementById('badge-pulang-status').className = "tag is-success is-small";
+                    document.getElementById('badge-pulang-status').className = "badge bg-success text-white";
                     document.getElementById('badge-pulang-status').innerText = "Sudah";
                 }
 
-                document.getElementById('page-login').classList.add('is-hidden');
-                document.getElementById('bottom-nav').classList.remove('is-hidden');
+                document.getElementById('page-login').classList.add('d-none');
+                document.getElementById('bottom-nav').classList.remove('d-none');
                 await ambilKonfigurasiSekolah();
                 switchPage('main');
             } else {
@@ -494,9 +497,9 @@
     function logout() {
         currentUser = null;
         if(activeStream) activeStream.getTracks().forEach(t => t.stop());
-        document.getElementById('bottom-nav').classList.add('is-hidden');
-        document.getElementById('page-login').classList.remove('is-hidden');
-        ['page-main', 'page-history', 'page-user'].forEach(p => document.getElementById(p).classList.add('is-hidden'));
+        document.getElementById('bottom-nav').classList.add('d-none');
+        document.getElementById('page-login').classList.remove('d-none');
+        ['page-main', 'page-history', 'page-user'].forEach(p => document.getElementById(p).classList.add('d-none'));
     }
 
     function bukaValidasiGPS(tipe) {
@@ -514,7 +517,7 @@
                 map.setView([sekolahLat, sekolahLng], 17);
             }
             if (sekolahCircle) map.removeLayer(sekolahCircle);
-            sekolahCircle = L.circle([sekolahLat, sekolahLng], { radius: radiusMaksimal, color: 'blue', fillColor: '#3b82f6', fillOpacity: 0.2 }).addTo(map);
+            sekolahCircle = L.circle([sekolahLat, sekolahLng], { radius: radiusMaksimal, color: 'blue', fillColor: '#0d6efd', fillOpacity: 0.2 }).addTo(map);
 
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(position => {
@@ -528,11 +531,11 @@
                     const statusBadge = document.getElementById('gps-status-info');
                     const btnLanjut = document.getElementById('btn-lanjut-absen');
                     if (jarak <= radiusMaksimal) {
-                        statusBadge.className = "tag is-success is-small mb-2";
+                        statusBadge.className = "badge bg-success text-white mb-3";
                         statusBadge.innerText = "Radius Valid (Di dalam sekolah)";
                         btnLanjut.disabled = false;
                     } else {
-                        statusBadge.className = "tag is-danger is-small mb-2";
+                        statusBadge.className = "badge bg-danger text-white mb-3";
                         statusBadge.innerText = `Diluar Radius (${Math.round(jarak)}m > ${radiusMaksimal}m)`;
                         btnLanjut.disabled = true;
                     }
@@ -550,7 +553,8 @@
 
     function lanjutKeKamera() {
         if (!currentUser.is_enrolled) {
-            document.getElementById('modalEnrollWarning').classList.add('is-active');
+            const modal = new bootstrap.Modal(document.getElementById('modalEnrollWarning'));
+            modal.show();
             return;
         }
         document.getElementById('tipe-absen-label').innerText = selectedTipeAbsen;
@@ -558,7 +562,9 @@
     }
 
     function tutupModalEnroll() {
-        document.getElementById('modalEnrollWarning').classList.remove('is-active');
+        const modalEl = document.getElementById('modalEnrollWarning');
+        const modal = bootstrap.Modal.getInstance(modalEl);
+        if(modal) modal.hide();
     }
 
     function keHalamanEnroll() {
@@ -583,15 +589,15 @@
 
             if (detections) {
                 const box = detections.box;
-                ctx.strokeStyle = '#10b981';
+                ctx.strokeStyle = '#198754';
                 ctx.lineWidth = 4;
                 ctx.strokeRect(box.x, box.y, box.width, box.height);
 
-                statusMsg.className = "is-size-7 has-text-weight-bold has-text-success";
+                statusMsg.className = "small fw-bold text-success";
                 statusMsg.innerText = "Wajah Terverifikasi: " + currentUser.nama;
                 btnAbsen.disabled = false;
             } else {
-                statusMsg.className = "is-size-7 has-text-weight-bold has-text-warning";
+                statusMsg.className = "small fw-bold text-warning";
                 statusMsg.innerText = "Mencari Wajah...";
                 btnAbsen.disabled = true;
             }
@@ -600,7 +606,7 @@
 
     async function prosesEnroll() {
         const msg = document.getElementById('enroll-msg');
-        msg.className = "is-size-7 has-text-weight-bold has-text-info"; msg.innerText = "Merekam wajah...";
+        msg.className = "small fw-bold text-primary"; msg.innerText = "Merekam wajah...";
 
         try {
             const video = document.getElementById('video-enroll');
@@ -625,19 +631,19 @@
             if (result.status === "success") {
                 currentUser.is_enrolled = true;
                 currentUser.image_url = cloudData.secure_url;
-                msg.className = "is-size-7 has-text-weight-bold has-text-success"; msg.innerText = "Enroll wajah berhasil!";
+                msg.className = "small fw-bold text-success"; msg.innerText = "Enroll wajah berhasil!";
                 setTimeout(() => switchPage('user'), 1500);
             } else {
                 throw new Error(result.message);
             }
         } catch (e) {
-            msg.className = "is-size-7 has-text-weight-bold has-text-danger"; msg.innerText = "Error: " + e.message;
+            msg.className = "small fw-bold text-danger"; msg.innerText = "Error: " + e.message;
         }
     }
 
     async function eksekusiKirimAbsen() {
         const msgEl = document.getElementById('absen-status-msg');
-        msgEl.className = "is-size-7 has-text-weight-bold has-text-info";
+        msgEl.className = "small fw-bold text-primary";
         msgEl.innerText = "Menyimpan absensi ke database...";
 
         try {
@@ -656,22 +662,22 @@
                 const jamSekarang = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
                 if(selectedTipeAbsen === "Datang") {
                     document.getElementById('time-datang-text').innerText = jamSekarang;
-                    document.getElementById('badge-datang-status').className = "tag is-success is-small";
+                    document.getElementById('badge-datang-status').className = "badge bg-success text-white";
                     document.getElementById('badge-datang-status').innerText = "Sudah";
                 } else {
                     document.getElementById('time-pulang-text').innerText = jamSekarang;
-                    document.getElementById('badge-pulang-status').className = "tag is-success is-small";
+                    document.getElementById('badge-pulang-status').className = "badge bg-success text-white";
                     document.getElementById('badge-pulang-status').innerText = "Sudah";
                 }
 
-                msgEl.className = "is-size-7 has-text-weight-bold has-text-success";
+                msgEl.className = "small fw-bold text-success";
                 msgEl.innerText = `Absen ${selectedTipeAbsen} Berhasil!`;
                 setTimeout(() => switchPage('main'), 1500);
             } else {
                 throw new Error(gasResult.message);
             }
         } catch (error) {
-            msgEl.className = "is-size-7 has-text-weight-bold has-text-danger";
+            msgEl.className = "small fw-bold text-danger";
             msgEl.innerText = "Gagal: " + error.message;
         }
     }
