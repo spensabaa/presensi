@@ -49,7 +49,7 @@
         .video-container {
             position: relative;
             width: 100%;
-            height: 200px;
+            height: 220px;
             background: #000;
             border-radius: 12px;
             overflow: hidden;
@@ -64,9 +64,8 @@
         }
         #map {
             width: 100%;
-            height: 170px;
+            height: 240px; /* Diperbesar agar lebih proporsional */
             border-radius: 12px;
-            margin-bottom: 10px;
             z-index: 10;
         }
         .sub-page {
@@ -107,7 +106,6 @@
 
     <!-- ================= HALAMAN LOGIN ================= -->
     <div id="page-login" class="main-content login-bg d-flex flex-column justify-content-center align-items-center text-white">
-        <!-- Floating Icons Dekoratif -->
         <div class="position-absolute" style="top: 2rem; left: 2rem; opacity: 0.2; font-size: 2rem;"><i class="fa-solid fa-graduation-cap"></i></div>
         <div class="position-absolute" style="top: 4rem; right: 2rem; opacity: 0.2; font-size: 1.8rem;"><i class="fa-solid fa-shield-halved"></i></div>
         <div class="position-absolute" style="bottom: 6rem; left: 2rem; opacity: 0.2; font-size: 1.8rem;"><i class="fa-solid fa-location-dot"></i></div>
@@ -165,7 +163,6 @@
             <h6 class="fw-bold text-dark mb-2 small"><i class="fa-solid fa-calendar-check text-primary me-2"></i>Presensi Harian</h6>
             
             <div class="row g-2">
-                <!-- Absen Datang -->
                 <div class="col-6">
                     <div class="bg-light p-2 border rounded-3 d-flex flex-column justify-content-between h-100">
                         <div>
@@ -185,7 +182,6 @@
                     </div>
                 </div>
 
-                <!-- Absen Pulang -->
                 <div class="col-6">
                     <div class="bg-light p-2 border rounded-3 d-flex flex-column justify-content-between h-100">
                         <div>
@@ -258,19 +254,24 @@
 
     <!-- ================= SUB-HALAMAN (GPS, KAMERA, ENROLL) ================= -->
 
-    <!-- HALAMAN GPS -->
+    <!-- HALAMAN GPS (DIPERCANTIK & PROFESIONAL) -->
     <div id="page-gps" class="sub-page d-none">
-        <div class="d-flex align-items-center mb-3">
+        <div class="d-flex align-items-center mb-2">
             <button onclick="switchPage('main')" class="btn btn-light btn-sm rounded-circle me-3 shadow-sm" style="width: 32px; height: 32px;"><i class="fa-solid fa-arrow-left"></i></button>
             <h4 class="h6 fw-bold text-dark mb-0">Validasi Lokasi GPS</h4>
         </div>
-        <div class="card p-3 border shadow-sm rounded-3 flex-grow-1 d-flex flex-column justify-content-between">
+        
+        <div class="card p-3 border shadow-sm rounded-4 flex-grow-1 d-flex flex-column justify-content-between bg-white">
             <div id="map"></div>
-            <div class="text-center">
-                <p class="text-muted mb-1" style="font-size: 11px;">Jarak Anda ke Titik Sekolah:</p>
-                <h3 id="jarak-text" class="h5 fw-bold text-primary mb-1">Menghitung GPS...</h3>
-                <span id="gps-status-info" class="badge bg-warning text-dark mb-3" style="font-size: 10px;">Mencari koordinat akurat...</span>
-                <button id="btn-lanjut-absen" onclick="lanjutKeKamera()" class="btn btn-primary btn-sm w-100 fw-bold py-2 shadow-sm" disabled>
+            
+            <div class="text-center px-2 py-1">
+                <span class="text-uppercase text-muted fw-semibold" style="font-size: 9px; letter-spacing: 0.5px;">Jarak Anda ke Titik Sekolah</span>
+                <div id="jarak-text" class="h4 fw-bold text-primary mb-1">Menghitung GPS...</div>
+                <div id="gps-status-info" class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle px-3 py-1.5 rounded-pill mb-3 fw-semibold" style="font-size: 11px;">
+                    <i class="fa-solid fa-circle-notch fa-spin me-1"></i> Mencari koordinat akurat...
+                </div>
+                
+                <button id="btn-lanjut-absen" onclick="lanjutKeKamera()" class="btn btn-primary btn-sm w-100 fw-bold py-2.5 shadow-sm rounded-3" disabled>
                     Lanjut ke Verifikasi Wajah <i class="fa-solid fa-arrow-right ms-1"></i>
                 </button>
             </div>
@@ -531,12 +532,12 @@
                     const statusBadge = document.getElementById('gps-status-info');
                     const btnLanjut = document.getElementById('btn-lanjut-absen');
                     if (jarak <= radiusMaksimal) {
-                        statusBadge.className = "badge bg-success text-white mb-3";
-                        statusBadge.innerText = "Radius Valid (Di dalam sekolah)";
+                        statusBadge.className = "badge bg-success-subtle text-success-emphasis border border-success-subtle px-3 py-1.5 rounded-pill mb-3 fw-semibold";
+                        statusBadge.innerHTML = `<i class="fa-solid fa-circle-check me-1"></i> Radius Valid (${Math.round(jarak)}m &le; ${radiusMaksimal}m)`;
                         btnLanjut.disabled = false;
                     } else {
-                        statusBadge.className = "badge bg-danger text-white mb-3";
-                        statusBadge.innerText = `Diluar Radius (${Math.round(jarak)}m > ${radiusMaksimal}m)`;
+                        statusBadge.className = "badge bg-danger-subtle text-danger-emphasis border border-danger-subtle px-3 py-1.5 rounded-pill mb-3 fw-semibold";
+                        statusBadge.innerHTML = `<i class="fa-solid fa-triangle-exclamation me-1"></i> Diluar Radius (${Math.round(jarak)}m > ${radiusMaksimal}m)`;
                         btnLanjut.disabled = true;
                     }
                 }, () => { alert("GPS tidak aktif atau izin lokasi ditolak."); }, { enableHighAccuracy: true });
